@@ -132,14 +132,15 @@ Tambah Pesanan Pengunjung
 
     if(kategori_pemesanan == "reguler"){
      paket_wisata.setAttribute("disabled", "");//menambahkan atribut disabled di form jika pilih paket reguler
-      document.getElementById("jenis_pembayaran").selectedIndex = "1";
-      jenis_pembayaran.removeAttribute("disabled");
+     document.getElementById("jenis_pembayaran").selectedIndex = "1";
+     jenis_pembayaran.removeAttribute("disabled");
      reguler_paket.removeAttribute("disabled");
      document.getElementById("jumlah_bayar").value = 5000;//jumlah bayar auto 5000
      document.getElementById("jumlah_orang").value = 1;
    }else {
     paket_wisata.removeAttribute("disabled");//atribud disabled dihilangkan jika pilih jenis paket non-reguler
     jenis_pembayaran.removeAttribute("disabled");
+    document.getElementById("jenis_pembayaran").selectedIndex = "0";
     document.getElementById("jumlah_bayar").value = "";
     document.getElementById("jumlah_orang").value = "";
   }
@@ -180,12 +181,8 @@ function JanisBayarFunction(){
    document.getElementById("jumlah_bayar").value = harga_total / 2;
  }else {
    document.getElementById("jumlah_bayar").value = harga_total;
-
  }
-
 }
-
-
 </script>
 
 

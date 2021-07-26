@@ -11,15 +11,15 @@ class OrderShipped extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $konfirmasi_pembayaran;
+    public $pemesanan;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($konfirmasi_pembayaran)
+    public function __construct($pemesanan)
     {
-        $this->konfirmasi_pembayaran = $konfirmasi_pembayaran;
+        $this->pemesanan = $pemesanan;
     }
 
     /**

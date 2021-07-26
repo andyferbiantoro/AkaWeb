@@ -139,50 +139,71 @@ class PengunjungController extends Controller
         ]);  
         $edit_status_pemesanan->update($input);
 
-       	$guide_id = User::where('role_id',3)->pluck('id'); 
+        $pem = Pemesanan::where('id', $data_pembayaran->pemesanan_id)->pluck('id');
+       	$guide_id = User::where('role_id',3)->pluck('id');
+       	
        	// dd($guide);
-         $this->received(Auth::user()->id);
-         $this->received_guide($guide_id);
+         $this->received($pem);
+         $this->received_guide($pem);
 
+       	
 		return redirect('/pengunjung-data_pembayaran')->with('success', 'Pembayaran  Berhasil Dilakukan');
 	}
 
 
 
-	public function received($id)
+	public function received($pem)
 	{
-		$pengunjung = User::where('id',Auth::user()->id)->first();
-       
+		
+       	$pemesanan= DB::table('pemesanans')
+		->join('pakets', 'pemesanans.paket_id', '=', 'pakets.id')
+		->select('pemesanans.*','pakets.nama_paket')
+		->where('pemesanans.id', $pem)
+		->orderBy('pemesanans.id','DESC')
+		->first();
 
-        $this->_sendEmail($pengunjung);
+        $this->_sendEmail($pemesanan);
 
 	}
 
-	public function received_guide($id)
+
+	public function received_guide($pem)
 	{
 		
-       	$guide = User::where('role_id',3)->get();
        	
-        $this->_sendEmailGuide($guide);
+       	$pemesanan_pengunjung= DB::table('pemesanans')
+		->join('pakets', 'pemesanans.paket_id', '=', 'pakets.id')
+		->join('users', 'pemesanans.user_id', '=', 'users.id')
+		->select('pemesanans.*','pakets.nama_paket','users.name')
+		->where('pemesanans.id', $pem)
+		->orderBy('pemesanans.id','DESC')
+		->first();
+       	
+        $this->_sendEmailGuide($pemesanan_pengunjung);
 
 	}
 
-	public function _sendEmail($id_user)
+
+	public function _sendEmail($pemesanan)
 	{
-		$message = new \App\Mail\OrderShipped($id_user);
-		\Mail::to($id_user->email)->send($message);
+		$message = new \App\Mail\OrderShipped($pemesanan);
+		\Mail::to(\Auth::user()->email)->send($message);
 	}
 
-	public function _sendEmailGuide($id_user)
-	{
-		
-		foreach ($id_user as $key => $value) {
 
-		$message = new \App\Mail\OrderShippedGuide($value);
+	public function _sendEmailGuide($pemesanan_pengunjung)
+	{
+
+		$guide = User::where('role_id',3)->get();
+
+		foreach ($guide as $key => $value) {
+
+		$message = new \App\Mail\OrderShippedGuide($pemesanan_pengunjung);
 		\Mail::to($value->email)->send($message);
 		}
 		
 	}
+
 
 	public function get_paket_wisata($id){
 

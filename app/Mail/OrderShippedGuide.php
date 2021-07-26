@@ -12,15 +12,15 @@ class OrderShippedGuide extends Mailable
 {
     use Queueable, SerializesModels;
 
-     public $notifikasi_guide;
+     public $pemesanan_pengunjung;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($notifikasi_guide)
+    public function __construct($pemesanan_pengunjung)
     {
-        $this->notifikasi_guide = $notifikasi_guide;
+        $this->pemesanan_pengunjung = $pemesanan_pengunjung;
     }
 
     /**
