@@ -31,7 +31,8 @@ Route::post('proses-login','AuthController@proses_login')->name('proses-login')-
 
 //Pengunjung
 Route::get('/', 'PengunjungController@landingpage')->name('landingpage-pengunjung');
- Route::get('/pengunjung-get_paket_wisata/{id}','PengunjungController@get_paket_wisata')->name('pengunjung-get_paket_wisata');
+Route::get('/pengunjung-get_paket_wisata/{id}','PengunjungController@get_paket_wisata')->name('pengunjung-get_paket_wisata');
+
 Route::group(['middleware' => ['auth', 'pengunjung']],function(){
 	Route::get('/pengunjung-data_pemesanan', 'PengunjungController@index')->name('pengunjung-data_pemesanan'); 
 	Route::get('/pengunjung-tambah_pesanan', 'PengunjungController@tambah_pesanan')->name('pengunjung-tambah_pesanan'); 
@@ -44,6 +45,7 @@ Route::group(['middleware' => ['auth', 'pengunjung']],function(){
 
 
 //Admin
+Route::get('/admin-get_paket_belum_bayar/{id_user}','AdminController@get_paket_belum_bayar')->name('admin-get_paket_belum_bayar');
 Route::group(['middleware' => ['auth', 'admin']],function(){
 	Route::get('/admin-beranda', 'AdminController@index')->name('admin-beranda');
 	Route::get('/admin-beranda_paket', 'AdminController@index2')->name('admin-beranda_paket'); 
@@ -56,11 +58,13 @@ Route::group(['middleware' => ['auth', 'admin']],function(){
 	Route::get('/admin-data_pembayaran_pengunjung', 'AdminController@data_pembayaran_pengunjung')->name('admin-data_pembayaran_pengunjung');
 	Route::get('/admin-galeri', 'AdminController@galeri')->name('admin-galeri');
 	Route::post('/admin-tambah_guide', 'AdminController@tambah_guide')->name('admin-tambah_guide');
+	Route::post('/admin-tambah_pengunjung', 'AdminController@tambah_pengunjung')->name('admin-tambah_pengunjung');
 	Route::post('/admin-tambah_paket_wisata', 'AdminController@tambah_paket_wisata')->name('admin-tambah_paket_wisata');
 	Route::post('/admin-hapus_data_guide/{id}','AdminController@hapus_data_guide')->name('admin-hapus_data_guide');
 	Route::post('/admin-nonaktif_data_paket_wisata/{id}','AdminController@nonaktif_data_paket_wisata')->name('admin-nonaktif_data_paket_wisata');
 	Route::post('/admin-aktif_data_paket_wisata/{id}','AdminController@aktif_data_paket_wisata')->name('admin-aktif_data_paket_wisata');
 	Route::post('/admin-proses_tambah_pesanan', 'AdminController@proses_tambah_pesanan')->name('admin-proses_tambah_pesanan');
+	Route::post('/admin-proses_tambah_pembayaran', 'AdminController@proses_tambah_pembayaran')->name('admin-proses_tambah_pembayaran');
 	Route::post('/admin-batalkan_pesanan/{id}','AdminController@batalkan_pesanan')->name('admin-batalkan_pesanan');
 	Route::get('/admin-laporan_pengunjung', 'AdminController@laporan_pengunjung')->name('admin-laporan_pengunjung');
 	Route::get('/admin-laporan_pemesanan_paket', 'AdminController@laporan_pemesanan_paket')->name('admin-laporan_pemesanan_paket');

@@ -114,7 +114,7 @@ Data Guide
                 <label class="float-label">Password Guide</label>
             </div>
             <div class="form-group form-primary">
-                <label >Foto Guide</label>
+                <label style="color: #009970">Foto Guide</label>
                 <input type="file" name="photo" class="form-control">
                 <span class="form-bar"></span>
             </div>

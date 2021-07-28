@@ -85,38 +85,39 @@ Data Pengunjung
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Tambah Guide</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Tambah Pengunjung</h5>
 
     </div>
     <div class="modal-body">
-        <form class="md-float-material form-material" action="{{route('admin-tambah_guide')}}" method="post" enctype="multipart/form-data">
+        <form class="md-float-material form-material" action="{{route('admin-tambah_pengunjung')}}" method="post" enctype="multipart/form-data">
             {{csrf_field()}}
             
 
             <div class="form-group form-primary">
                 <input type="text" name="name" class="form-control">
                 <span class="form-bar"></span>
-                <label class="float-label">Nama Guide</label>
+                <label class="float-label">Nama Pengunjung</label>
             </div>
             <div class="form-group form-primary">
                 <input type="email" name="email" class="form-control">
                 <span class="form-bar"></span>
-                <label class="float-label">Email Guide</label>
+                <label class="float-label">Email Pengunjung</label>
             </div>
             <div class="form-group form-primary">
                 <input type="text" name="alamat" class="form-control">
                 <span class="form-bar"></span>
-                <label class="float-label">Alamat Guide</label>
+                <label class="float-label">Alamat Pengunjung</label>
             </div>
             <div class="form-group form-primary">
                 <input type="password" name="password" class="form-control">
                 <span class="form-bar"></span>
-                <label class="float-label">Password Guide</label>
+                <label class="float-label">Password Pengunjung</label>
             </div>
             <div class="form-group form-primary">
+                <label style="color: #009970">Foto Pengunjung (Opsional)</label>
                 <input type="file" name="photo" class="form-control">
                 <span class="form-bar"></span>
-                <label class="float-label">Foto Guide</label>
+                
             </div>
             <div class="row m-t-30">
                 <div class="col-md-12">
