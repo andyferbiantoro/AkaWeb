@@ -47,14 +47,14 @@ Tambah Pembayaran
 
                <div class="form-group form-success">
                 <label style="color: #009970">Tanggal Pembayaran</label>
-                <input type="date" name="tanggal_pembayaran" class="form-control">
+                <input type="date" name="tanggal_pembayaran" class="form-control" required="">
                 <span class="form-bar"></span>
               </div>
 
 
               <div class="form-group form-success">
                 <label style="color: #009970">Nama Paket</label>
-                <select name="metode_pembayaran" class="form-control">
+                <select name="metode_pembayaran" class="form-control" required="">
                  <option selected disabled> -- Pilih Metode Pembayaran -- </option>
                    <option>Transfer</option>
                    <option>Cash</option>
@@ -64,7 +64,7 @@ Tambah Pembayaran
 
              <div class="form-group form-success">
                 <label style="color: #009970">Bukti Pembayaran</label>
-                <input type="file" name="bukti_pembayaran" class="form-control">
+                <input type="file" name="bukti_pembayaran" required="" class="form-control">
                 <span class="form-bar"></span>
               </div>
 

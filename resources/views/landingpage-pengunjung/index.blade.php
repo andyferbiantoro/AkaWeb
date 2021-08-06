@@ -68,7 +68,13 @@
             @endif
 
             @if(!Auth::guest())
-            <li><a href="{{ route('pengunjung-data_pemesanan') }}">Dashboard</a></li>
+              @if(Auth::user()->role_id == 1)
+              <li><a href="{{ route('pengunjung-data_pemesanan') }}">Dashboard</a></li>
+              @endif
+              
+                @if(Auth::user()->role_id == 2)
+                <li><a href="{{ route('admin-beranda') }}">Dashboard Admin</a></li>
+                @endif
             @endif
             <!-- <li><a href="#contact">Contact</a></li>
 
@@ -85,6 +91,7 @@
         <h1>Agrowisata Kebun Al-Qur'an</h1><br><br>
         <!-- <h2>We are team of talented designers making websites with Bootstrap</h2> -->
         <a href="#paket" class="btn-get-started scrollto">Lihat Paket</a>
+         <a href="#galeri" class="btn-get-started scrollto">Lihat Galeri</a>
       </div>
     </section><!-- End Hero -->
 
@@ -101,7 +108,7 @@
               <h2>SEJARAH</h2>
               <h3>Agrowisata Kebun Al-Qur'an (AKA)</h3>
             </div>
-            <div class="col-lg-6 pt-4 pt-lg-0" data-aos="fade-left" data-aos-delay="200">
+            <div class="col-lg-6 pt-4 pt-lg-0" data-aos="fade-left" style="text-align: justify;" data-aos-delay="200">
               <p>
                 Agrowisata Kebun Al-Qur'an (AKA) didirikan pada tanggal 19 Oktober 2019. Agrowisata ini dengan luas lahan 2 hektare terletak di Desa Kaliploso kecamatan Cluring. Desa Kaliploso memiliki sektor pertanian sangat baik oleh karena itu Desa Kaliploso disebut sebagai Desa Hortikultural yaitu banyaknya komoditas pertanian HORTI baik dari sayur dan buah-buahan yang mengidentifikasikan diri sebagai Desa Hortikultural. Hal inilah yang menjadi potensi Desa Kaliploso untuk mendirikan Agrowisata Kebun Al-Qur'an (AKA) sebagai tempat wisata agar diketahui oleh masyarakat umum. Agrowisata Kebun Al-Qur'an (AKA) merupakan wisata yang memadukan pengembangan inovasi pertanian modern, edukasi, dan jenis-jenis tanaman yang tercantum dalam Al-Qur'an dan hadits Nabi Muhammad SAW. Tanaman yang tercantum dalam Al-Qur'an tersebut yaitu buah tin, buah kurma, buah pisang, buah delima, bidara, buah anggur, jahe, dan tanaman tambahan lainnya. Agrowisata Kebun AL-Qur'an (AKA) menyediakan keindahan alam, kuliner, kolam, dan edukasi agama. Fasilitas yang dimiliki agrowisata ini antara lain area parkir yang cukup, toilet umum, warung makan, tempat beribadah, spot foto, gazebo, taman bunga dan masih banyak lagi.
               </p>
@@ -121,7 +128,7 @@
               <h2>INFORMASI WISATA</h2>
               <h3>Agrowisata Kebun Al-Qur'an (AKA)</h3>
             </div>
-            <div class="col-lg-6 pt-4 pt-lg-0" data-aos="fade-left" data-aos-delay="200">
+            <div class="col-lg-6 pt-4 pt-lg-0" data-aos="fade-left" style="text-align: justify;" data-aos-delay="200">
               <p>
                 Agrowisata Kebun Al-Qur'an (AKA) terletak di Desa Kaliploso kecamatan Cluring Kabupaten Banyuwangi. Agrowisata Kebun Al-Qur'an memiliki luas 2 hektare Wisata ini menyediakan keindahan alam, kuliner, kolam dan edukasi agama.
               </p><br>
@@ -166,10 +173,10 @@
             <div class="icon-boxes d-flex flex-column justify-content-center">
               <div class="row">
                 <div class="col-xl-4 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
-                  <div class="icon-box mt-4 mt-xl-0">
+                  <div class="icon-box mt-4 mt-xl-0" >
                     <!-- <i class="bx bx-user"></i> -->
                     <h2>1</h2>
-                    <p>Untuk umur pengunjung diatas 5 tahun keatas maka harga tiket sama dengan harga tiket dewasa.</p>
+                    <p style="text-align: center;">Untuk umur pengunjung diatas 5 tahun keatas maka harga tiket sama dengan harga tiket dewasa.</p>
                     
                   </div>
                 </div>
@@ -177,7 +184,7 @@
                   <div class="icon-box mt-4 mt-xl-0">
                    <!--  <i class="bx bx-cube-alt"></i> -->
                    <h2>2</h2>
-                   <p>Apabila dalam pemesanan jumlah pengunjung tidak sesuai dengan jumlah yang dipesan maka harga akan tetap sama.</p>
+                   <p style="text-align: center;">Apabila dalam pemesanan jumlah pengunjung tidak sesuai dengan jumlah yang dipesan maka harga akan tetap sama.</p>
 
                  </div>
                </div>
@@ -185,7 +192,7 @@
                 <div class="icon-box mt-4 mt-xl-0">
                   <!-- <i class="bx bx-images"></i> -->
                   <h2>3</h2>
-                  <p>Pengunjung yang memesan paket harus berjumlah 5 orang.</p>
+                  <p style="text-align: center;">Pengunjung yang memesan paket harus berjumlah 5 orang.</p>
                 </div>
               </div>
 
@@ -194,21 +201,21 @@
                 <div class="icon-box mt-4 mt-xl-0">
                   <!-- <i class="bx bx-user"></i> -->
                   <h2>4</h2>
-                  <p>Pengunjung yang tidak ingin didampingi oleh guide maka memesan regular.</p>
+                  <p style="text-align: center;">Pengunjung yang tidak ingin didampingi oleh guide maka memesan regular.</p>
                 </div>
               </div>
               <div class="col-xl-4 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="200">
                 <div class="icon-box mt-4 mt-xl-0">
                   <!-- <i class="bx bx-cube-alt"></i> -->
                   <h2>5</h2>
-                  <p>Pengunjung yang telah memesan diwajibkan untuk memperlihatkan konfirmasi pemesanan.</p>
+                  <p style="text-align: center;">Pengunjung yang telah memesan diwajibkan untuk memperlihatkan konfirmasi pemesanan.</p>
                 </div>
               </div>
               <div class="col-xl-4 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="300">
                 <div class="icon-box mt-4 mt-xl-0">
                   <!-- <i class="bx bx-images"></i> -->
                   <h2>6</h2>
-                  <p>Pemesanan diatas 10 pengunjung akan mendapatkan diskon sebesar 10%.</p>
+                  <p style="text-align: center;">Pemesanan diatas 10 pengunjung akan mendapatkan diskon sebesar 10%.</p>
                 </div>
               </div>
 
@@ -229,7 +236,7 @@
           <h2>CARA PEMESANAN</h2>
           <h3>Agrowisata Kebun Al-Qur'an (AKA)</h3>
         </div>
-        <div class="col-lg-6 pt-4 pt-lg-0" data-aos="fade-left" data-aos-delay="200">
+        <div class="col-lg-6 pt-4 pt-lg-0" data-aos="fade-left" style="text-align: justify;" data-aos-delay="200">
           <p>
             Cara pemesanan dikategorikan menjadi dua macam yaitu bagi calon pengunjung dan bagi pengelola.
           </p>
@@ -275,7 +282,7 @@
               <p>{{$paket->deskripsi_paket}}</p>
               <div class="portfolio-links">
                 <a href="{{asset('uploads/foto_paket_wisata/'.$paket->photo)}}"  data-gall="portfolioGallery" class="venobox" title="App 1"><i class="bx bx-show"></i></a>
-                <a href="{{route('pengunjung-tambah_pesanan')}}" title="Pesan Paket"><i class="bx bx-task"></i></a>
+                <a href="{{route('pengunjung-data_pemesanan')}}" title="Pesan Paket"><i class="bx bx-task"></i></a>
               </div>
             </div>
           </div>

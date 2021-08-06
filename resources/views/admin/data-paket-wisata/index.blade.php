@@ -29,13 +29,13 @@ Data Paket Wisata
                                 <button type="button" style="float: right;" class="btn btn-success right"  data-toggle="modal" data-target="#ModalTambahpaket" >
                                     Tambah Paket
                                 </button>
-                                 <a href="{{route('admin-data_paket_wisata_nonaktif')}}"><button type="button"  class="btn btn-primary right"  >
+                                <a href="{{route('admin-data_paket_wisata_nonaktif')}}"><button type="button"  class="btn btn-primary right"  >
                                     Lihat Paket Nonaktif
                                 </button></a>
                             </div>
 
                             <div class="card-block">
-                               <div class="table-responsive">
+                             <div class="table-responsive">
                                 <table id="dataTable" class="table table-hover">
                                     <thead>
                                         <tr>
@@ -45,6 +45,8 @@ Data Paket Wisata
                                             <th scope="col">Deskripsi</th>
                                             <th scope="col">Harga</th>
                                             <th scope="col">Aksi</th>
+                                            <th style="display: none;">id</th>
+                                            <th style="display: none;">harga_hidden</th>
 
                                         </tr>
                                     </thead>
@@ -64,7 +66,11 @@ Data Paket Wisata
                                             <a href="javascript:;" data-toggle="modal" onclick="deleteData({{$paket->id}})" data-target="#DeleteModal">
                                                 <button class="btn btn-danger btn-sm fa fa-close" title="Non-Aktifkan"></button>
                                             </a>
+                                            <button class="btn btn-info btn-sm fa fa-edit edit" title="Update Paket"></button>
+                                           
                                         </td>
+                                        <td style="display: none">{{$paket->id}}</td>
+                                        <td style="display: none">{{$paket->harga_paket}}</td>
 
                                     </tr>
                                     @endforeach
@@ -98,37 +104,38 @@ Data Paket Wisata
             
 
             <div class="form-group form-primary">
-                <input type="text" name="nama_paket" class="form-control">
+                <input type="text" name="nama_paket" id="nama_paket" class="form-control">
                 <span class="form-bar"></span>
                 <label class="float-label">Nama Paket</label>
             </div>
             <div class="form-group form-primary">
-                <input type="text" name="deskripsi_paket" class="form-control">
+                <input type="text" name="deskripsi_paket" id="deskripsi_paket" class="form-control">
                 <span class="form-bar"></span>
                 <label class="float-label">Deskripsi Paket</label>
             </div>
             <div class="form-group form-primary">
-                <input type="number" name="harga_paket" class="form-control">
+                <input type="number" name="harga_paket" id="harga_paket" class="form-control">
                 <span class="form-bar"></span>
                 <label class="float-label">Harga Paket</label>
             </div>
             <div class="form-group form-primary">
                 <label >Foto Paket</label>
-                <input type="file" name="photo" class="form-control">
+                <input type="file" name="photo" id="photo" class="form-control">
                 <span class="form-bar"></span>
             </div>
             <div class="row m-t-30">
-                <div class="col-md-12">
-                    <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Submit</button>
-                </div>
+               <div class="col-md-3">
+                <button type="button" class="btn btn-danger btn-md btn-block waves-effect text-center m-b-20" onclick="BatalFunction()" data-dismiss="modal">Batal</button>
             </div>
-            <hr/>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-
-    </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Submit</button>
+            </div>
+        </div>
+        <hr/>
+    </form>
+</div>
+<div class="modal-footer">
+</div>
 </div>
 </div>
 </div>
@@ -158,6 +165,60 @@ Data Paket Wisata
     </div>
 </div> 
 
+
+
+
+<!-- Modal konfirmasi Update -->
+<div id="UpdateModal" class="modal fade" role="dialog">
+    <div class="modal-dialog ">
+        <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Paket Wisata</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                    <form class="form-material" action="" id="updateFormPaket" method="post" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                        {{ method_field('POST') }}
+
+                        <div class="form-group form-success">
+                            <label style="color: #009970">Nama Paket Wisata</label>
+                            <input type="text" id="nama_paket_update" name="nama_paket" class="form-control" >
+                            <span class="form-bar"></span>
+                        </div>
+
+                         <div class="form-group form-success">
+                            <label style="color: #009970">Deskripsi Paket Wisata</label>
+                            <input type="text" id="deskripsi_paket_update" name="deskripsi_paket" class="form-control" >
+                            <span class="form-bar"></span>
+                        </div>
+
+                        <div class="form-group form-success">
+                            <label style="color: #009970">Harga Paket Wisata</label>
+                            <input type="text" id="harga_paket_update" name="harga_paket" class="form-control">
+                            <span class="form-bar"></span>
+                        </div>
+
+                        <div class="form-group form-success">
+                            <label style="color: #009970">Foto Paket Wisata</label>
+                            <input type="file" id="photo_update" name="photo" class="form-control" >
+                            <span class="form-bar"></span>
+                        </div>
+
+                      <button type="button" class="btn btn-secondary float-right" data-dismiss="modal">Batal</button>
+                      <button type="submit"  class="btn btn-info float-right mr-2" >Update</button>
+                    </form>          
+                </div>
+            </div>
+    </div>
+</div> 
+
+
+@section('js')
 <script type="text/javascript">
     function deleteData(id) {
         var id = id;
@@ -170,4 +231,36 @@ Data Paket Wisata
         $("#nonaktifForm").submit();
     }
 </script>
+
+<script type="text/javascript">
+
+    function BatalFunction() {
+        
+    document.getElementById("nama_paket").value = "";
+    document.getElementById("deskripsi_paket").value = "";
+    document.getElementById("harga_paket").value = "";
+    document.getElementById("photo").value = "";
+  
+    }
+</script>
+
+<script>
+    $(document).ready(function() {
+        var table = $('#dataTable').DataTable();
+        table.on('click', '.edit', function() {
+            $tr = $(this).closest('tr');
+            if ($($tr).hasClass('child')) {
+                $tr = $tr.prev('.parent');
+            }
+            var data = table.row($tr).data();
+            console.log(data);
+            $('#nama_paket_update').val(data[1]);
+            $('#deskripsi_paket_update').val(data[3]);
+            $('#harga_paket_update').val(data[7]);
+            $('#updateFormPaket').attr('action','admin-proses_update_paket_wisata/'+ data[6]);
+            $('#UpdateModal').modal('show');
+        });
+    });
+</script>
+@endsection
 @endsection

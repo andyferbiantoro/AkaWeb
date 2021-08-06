@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use App\Pemesanan;
 use App\Paket;
 use Carbon\Carbon;
-use DB;
 use App\User;
+use File;
+use DB;
+use Auth;
 
 class KepalaDesaController extends Controller
 {
@@ -138,5 +140,39 @@ class KepalaDesaController extends Controller
 
 		// return $laporan_pendapatan;
 		return view('kepala-desa.data-laporan.laporan-pendapatan',compact('laporan_pendapatan_hari','laporan_pendapatan_bulan','laporan_pendapatan_tahun'));
+	}
+
+
+
+	public function kepala_desa_profil()
+	{
+
+		$profil_kepala_desa = User::where('id',Auth::user()->id)->get();
+
+		return view('kepala-desa.profil-kepala_desa', compact('profil_kepala_desa'));
+	}
+
+	public function proses_ganti_foto_profil_kades(Request $request ,$id)
+	{
+		$foto_kepala_desa = User::find($id);
+		//dd($foto_kepala_desa);
+
+		File::delete('uploads/foto_pengelola/'.$foto_kepala_desa->photo);
+		$foto_kepala_desa->delete();  
+
+		if($request->hasFile('photo')){
+			$file = $request->file('photo');
+			$filename = $file->getClientOriginalName();
+			$file->move('uploads/foto_pengelola/', $filename);
+			$foto_kepala_desa->photo = $filename;
+
+		}else{
+			echo "Gagal upload gambar";
+		}
+
+		$foto_kepala_desa->save();
+
+		return redirect('/kepala_desa-profil')->with('success', 'Foto profil berhasil diupdate');
+
 	}
 }

@@ -1,6 +1,6 @@
 @component('mail::message')
 
-Pembayaran anda telah berhasil dilakukan dengan nomor pemesanan : {{$pemesanan->nomor_pemesanan}}<br>
+Pembayaran anda telah Terverifikasi dengan nomor pemesanan : {{$pemesanan->nomor_pemesanan}}<br>
 Nama Paket Wisata : {{$pemesanan->nama_paket}}<br>
 Tanggal Berkunjung : {{date("j F Y", strtotime($pemesanan->tanggal_berkunjung))}}<br>
 Pukul Kunjungan : {{date("H:i", strtotime($pemesanan->pukul_kunjungan))}} WIB<br>

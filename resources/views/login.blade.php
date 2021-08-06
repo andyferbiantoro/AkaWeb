@@ -103,6 +103,8 @@
                                     <div class="row">
                                         <div class="col-md-10">
                                             <!-- <p class="text-inverse text-left m-b-0">Thank you.</p> -->
+                                            
+                                            <p class="text-inverse text-center"><b>Belum punya akun ? <a href="{{ route('register') }}" style="color: #009970">Register</a></b></p>
                                             <p class="text-inverse text-left"><a href="{{ route('landingpage-pengunjung') }}"><b>Kembali ke Beranda Website</b></a></p>
                                         </div>
                                      

@@ -14,12 +14,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/login', function () {
-    return view('login');
+	return view('login');
 })->name('login')->middleware('guest');
 
 
 Route::get('/register', function () {
-    return view('register');
+	return view('register');
 })->name('register')->middleware('guest');
 
 //proses register
@@ -29,18 +29,23 @@ Route::post('proses-register', 'AuthController@proses_register')->name('proses-r
 Route::post('proses-login','AuthController@proses_login')->name('proses-login')->middleware('guest');
 
 
+
 //Pengunjung
 Route::get('/', 'PengunjungController@landingpage')->name('landingpage-pengunjung');
 Route::get('/pengunjung-get_paket_wisata/{id}','PengunjungController@get_paket_wisata')->name('pengunjung-get_paket_wisata');
-
 Route::group(['middleware' => ['auth', 'pengunjung']],function(){
 	Route::get('/pengunjung-data_pemesanan', 'PengunjungController@index')->name('pengunjung-data_pemesanan'); 
 	Route::get('/pengunjung-tambah_pesanan', 'PengunjungController@tambah_pesanan')->name('pengunjung-tambah_pesanan'); 
 	Route::get('/pengunjung-data_pembayaran', 'PengunjungController@data_pembayaran')->name('pengunjung-data_pembayaran'); 
 	Route::get('/pengunjung-tambah_pembayaran', 'PengunjungController@tambah_pembayaran')->name('pengunjung-tambah_pembayaran'); 
+	Route::get('/pengunjung-profil', 'PengunjungController@profil')->name('pengunjung-profil'); 
 	Route::post('/pengunjung-proses_tambah_pesanan', 'PengunjungController@proses_tambah_pesanan')->name('pengunjung-proses_tambah_pesanan');
 	Route::post('/pengunjung-proses_tambah_pembayaran', 'PengunjungController@proses_tambah_pembayaran')->name('pengunjung-proses_tambah_pembayaran');
 	Route::post('/pengunjung-batalkan_pesanan/{id}','PengunjungController@batalkan_pesanan')->name('pengunjung-batalkan_pesanan');
+	Route::put('/pengunjung-proses_ganti_foto_profil/{id}', 'PengunjungController@proses_ganti_foto_profil')->name('pengunjung-proses_ganti_foto_profil');
+	Route::post('/pengunjung-pelunasan_pembayaran/{id}','PengunjungController@pelunasan_pembayaran')->name('pengunjung-pelunasan_pembayaran');
+
+
 });
 
 
@@ -62,15 +67,22 @@ Route::group(['middleware' => ['auth', 'admin']],function(){
 	Route::post('/admin-tambah_paket_wisata', 'AdminController@tambah_paket_wisata')->name('admin-tambah_paket_wisata');
 	Route::post('/admin-hapus_data_guide/{id}','AdminController@hapus_data_guide')->name('admin-hapus_data_guide');
 	Route::post('/admin-nonaktif_data_paket_wisata/{id}','AdminController@nonaktif_data_paket_wisata')->name('admin-nonaktif_data_paket_wisata');
+	Route::post('/admin-proses_update_paket_wisata/{id}','AdminController@proses_update_paket_wisata')->name('admin-proses_update_paket_wisata');
 	Route::post('/admin-aktif_data_paket_wisata/{id}','AdminController@aktif_data_paket_wisata')->name('admin-aktif_data_paket_wisata');
 	Route::post('/admin-proses_tambah_pesanan', 'AdminController@proses_tambah_pesanan')->name('admin-proses_tambah_pesanan');
 	Route::post('/admin-proses_tambah_pembayaran', 'AdminController@proses_tambah_pembayaran')->name('admin-proses_tambah_pembayaran');
+	Route::post('/admin-verifikasi_pembayaran/{id}','AdminController@verifikasi_pembayaran')->name('admin-verifikasi_pembayaran');
 	Route::post('/admin-batalkan_pesanan/{id}','AdminController@batalkan_pesanan')->name('admin-batalkan_pesanan');
 	Route::get('/admin-laporan_pengunjung', 'AdminController@laporan_pengunjung')->name('admin-laporan_pengunjung');
 	Route::get('/admin-laporan_pemesanan_paket', 'AdminController@laporan_pemesanan_paket')->name('admin-laporan_pemesanan_paket');
 	Route::get('/admin-laporan_pendapatan', 'AdminController@laporan_pendapatan')->name('admin-laporan_pendapatan');
 	Route::post('/admin-tambah_galeri', 'AdminController@tambah_galeri')->name('admin-tambah_galeri');
 	Route::post('/admin-hapus_data_galeri/{id}','AdminController@hapus_data_galeri')->name('admin-hapus_data_galeri');
+	Route::get('/admin-profil', 'AdminController@admin_profil')->name('admin-profil'); 
+	Route::put('/admin-proses_ganti_foto_profil_admin/{id}', 'AdminController@proses_ganti_foto_profil_admin')->name('admin-proses_ganti_foto_profil_admin');
+	Route::post('/admin-pelunasan_pembayaran/{id}','AdminController@pelunasan_pembayaran')->name('admin-pelunasan_pembayaran');
+
+
 });
 
 
@@ -78,6 +90,8 @@ Route::group(['middleware' => ['auth', 'admin']],function(){
 Route::group(['middleware' => ['auth', 'guide']],function(){
 	Route::get('/guide-beranda', 'GuideController@index')->name('guide-beranda');
 	Route::get('/guide-jadwal', 'GuideController@guide_jadwal')->name('guide-jadwal');
+	Route::get('/guide-profil', 'GuideController@guide_profil')->name('guide-profil'); 
+	Route::put('/guide-proses_ganti_foto_profil_guide/{id}', 'GuideController@proses_ganti_foto_profil_guide')->name('guide-proses_ganti_foto_profil_admin');
 });
 
 
@@ -88,6 +102,8 @@ Route::group(['middleware' => ['auth', 'kepala_desa']],function(){
 	Route::get('/kepala_desa-laporan_pengunjung', 'KepalaDesaController@laporan_pengunjung')->name('kepala_desa-laporan_pengunjung');
 	Route::get('/kepala_desa-laporan_pemesanan_paket', 'KepalaDesaController@laporan_pemesanan_paket')->name('kepala_desa-laporan_pemesanan_paket');
 	Route::get('/kepala_desa-laporan_pendapatan', 'KepalaDesaController@laporan_pendapatan')->name('kepala_desa-laporan_pendapatan');
+	Route::get('/kepala_desa-profil', 'KepalaDesaController@kepala_desa_profil')->name('kepala_desa-profil'); 
+	Route::put('/kepala_desa-proses_ganti_foto_profil_kades/{id}', 'KepalaDesaController@proses_ganti_foto_profil_kades')->name('kepala_desa-proses_ganti_foto_profil_kades');
 });
 
 

@@ -10,6 +10,7 @@ use App\Pemesanan;
 use App\Pembayaran;
 use File;
 use DB;
+use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
@@ -79,8 +80,9 @@ class AdminController extends Controller
 			$total_orderan[] = $orderan->total_orderan;
 		}
 
+		$foto_admin = User::where('id',Auth::user()->id)->get();
 
-		return view('admin.index',compact('laporan_pengunjung_hari','laporan_pengunjung_bulan','laporan_pengunjung_tahun','paket_terlaris','nama_paket','total_orderan','laporan_pendapatan_hari','laporan_pendapatan_bulan','laporan_pendapatan_tahun'));
+		return view('admin.index',compact('laporan_pengunjung_hari','laporan_pengunjung_bulan','laporan_pengunjung_tahun','paket_terlaris','nama_paket','total_orderan','laporan_pendapatan_hari','laporan_pendapatan_bulan','laporan_pendapatan_tahun','foto_admin'));
 	}
 
 
@@ -90,6 +92,7 @@ class AdminController extends Controller
 
 		return view('admin.data-guide.index',compact('data_guide'));
 	}
+
 
 	public function data_pengunjung(){
 		$data_pengunjung = User::where('role_id',1)->orderBy('id','DESC')->get();
@@ -242,12 +245,37 @@ class AdminController extends Controller
 
 		$edit_status_paket = Paket::where('id', $id);
 
-            $input =([
-            'status_paket' => 0,
-        ]);  
-        $edit_status_paket->update($input);
+		$input =([
+			'status_paket' => 0,
+		]);  
+		$edit_status_paket->update($input);
 
 		return redirect()->back()->with('success', 'Data Guide Berhasil Dihapus');
+	}
+
+
+	public function proses_update_paket_wisata(Request $request, $id){
+
+		$update_data_paket = Paket::where('id', $id)->first();
+
+		$input =[
+			'nama_paket' => $request->nama_paket,
+			'deskripsi_paket' => $request->deskripsi_paket,
+			'harga_paket' => $request->harga_paket
+		]; 
+
+		if ($file = $request->file('photo')) {
+			if ($update_data_paket->photo) {
+				File::delete('uploads/foto_paket_wisata/'.$update_data_paket->photo);
+			}
+			$nama_file = $file->getClientOriginalName();
+			$file->move(public_path() . '/uploads/foto_paket_wisata/', $nama_file);  
+			$input['photo'] = $nama_file;
+		}
+
+		$update_data_paket->update($input);
+
+		return redirect()->back()->with('success', 'Data Paket Berhasil diupdate');
 	}
 
 
@@ -255,10 +283,10 @@ class AdminController extends Controller
 
 		$edit_status_paket = Paket::where('id', $id);
 
-            $input =([
-            'status_paket' => 1,
-        ]);  
-        $edit_status_paket->update($input);
+		$input =([
+			'status_paket' => 1,
+		]);  
+		$edit_status_paket->update($input);
 
 		return redirect()->back()->with('success', 'Data Guide Berhasil Dihapus');
 	}
@@ -279,6 +307,7 @@ class AdminController extends Controller
 
 		return view('admin.data-pemesanan.index',compact('data_pemesanan','data_paket','data_pengunjung'));
 	}
+
 
 	public function proses_tambah_pesanan(Request $request){
 
@@ -304,6 +333,7 @@ class AdminController extends Controller
 		return redirect('/admin-data_pemesanan_pengunjung')->with('success', 'Pemesanan Baru Berhasil Ditambahkan');
 	}
 
+
 	public function batalkan_pesanan($id){
 
 		$data_pemesanan = Pemesanan::findOrFail($id);
@@ -318,11 +348,14 @@ class AdminController extends Controller
 		$data_pembayaran = DB::table('pembayarans')
 		->join('pemesanans', 'pembayarans.pemesanan_id', '=', 'pemesanans.id')
 		->join('pakets', 'pemesanans.paket_id', '=', 'pakets.id')
-		->join('users','pemesanans.user_id','=','users.id')
-		->select('pembayarans.*','pakets.nama_paket','users.name','pemesanans.jenis_pembayaran')
+		->join('users', 'pemesanans.user_id', '=', 'users.id')
+		->select('pembayarans.*','pakets.nama_paket','pemesanans.jenis_pembayaran','pemesanans.jumlah_pembayaran','users.name','pemesanans.bukti_pelunasan')
+		
 		->orderBy('pembayarans.id','DESC')
-		->where('status_pemesanan',1)
+		->where('pemesanans.status_pemesanan', 1)
 		->get();
+
+		//dd($data_pembayaran);
 		
 
 		$data_pamesanan = DB::table('pemesanans')
@@ -348,7 +381,7 @@ class AdminController extends Controller
 		$data_pembayaran->pemesanan_id = $request->input('pemesanan_id');
 		$data_pembayaran->tanggal_pembayaran  = $request->input('tanggal_pembayaran');
 		$data_pembayaran->metode_pembayaran = $request->input('metode_pembayaran');
-		$data_pembayaran->status_pembayaran = 1;
+		$data_pembayaran->status_pembayaran = 2; //langsung status 2 karena dari admin, tidak perlu verifikasi
 		
 		if($request->hasFile('bukti_pembayaran')){
 			$file = $request->file('bukti_pembayaran');
@@ -365,27 +398,50 @@ class AdminController extends Controller
 		//Ubah Status pemesanan
 		$edit_status_pemesanan = Pemesanan::where('id', $data_pembayaran->pemesanan_id);
 
-            $input =([
-            'status_pemesanan' => 1,
-        ]);  
-        $edit_status_pemesanan->update($input);
+		$input =([
+			'status_pemesanan' => 1,
+		]);  
+		$edit_status_pemesanan->update($input);
 
-        $pem = Pemesanan::where('id', $data_pembayaran->pemesanan_id)->pluck('id');
-       	$guide_id = User::where('role_id',3)->pluck('id');
-       	
+		$pem = Pemesanan::where('id', $data_pembayaran->pemesanan_id)->pluck('id');
+		$guide_id = User::where('role_id',3)->pluck('id');
+
        	// dd($guide);
-         $this->received($pem);
-         $this->received_guide($pem);
+		$this->received($pem);
+		//$this->received_guide($pem);
 
-       	
-		return redirect('/pengunjung-data_pembayaran')->with('success', 'Pembayaran  Berhasil Dilakukan');
+
+		return redirect('/admin-data_pembayaran_pengunjung')->with('success', 'Pembayaran  Berhasil Dilakukan, Email verifikasi telah terkirim ke pemesan');
+	}
+
+
+
+	public function verifikasi_pembayaran($id){
+
+		$verifikasi_pembayaran = Pembayaran::find($id);
+
+		
+		$input =([
+			'status_pembayaran' => 2,
+		]);  
+		$verifikasi_pembayaran->update($input);
+
+
+		$pem = Pemesanan::where('id', $verifikasi_pembayaran->pemesanan_id)->pluck('id');
+		$guide_id = User::where('role_id',3)->pluck('id');
+
+       	// dd($guide);
+		$this->received($pem);
+		//$this->received_guide($pem);
+
+		return redirect()->back()->with('success', 'Data pembayaran berhasill diverifikasi, Email konfirmasi sudah dikirimkan ke pemesan');
 	}
 
 
 	public function received($pem)
 	{
 		
-       	$pemesanan= DB::table('pemesanans')
+		$pemesanan= DB::table('pemesanans')
 		->join('pakets', 'pemesanans.paket_id', '=', 'pakets.id')
 		->join('users', 'pemesanans.user_id', '=', 'users.id')
 		->select('pemesanans.*','pakets.nama_paket','users.email')
@@ -393,7 +449,7 @@ class AdminController extends Controller
 		->orderBy('pemesanans.id','DESC')
 		->first();
 
-        $this->_sendEmail($pemesanan);
+		$this->_sendEmail($pemesanan);
 
 	}
 
@@ -401,16 +457,16 @@ class AdminController extends Controller
 	public function received_guide($pem)
 	{
 		
-       	
-       	$pemesanan_pengunjung= DB::table('pemesanans')
+
+		$pemesanan_pengunjung= DB::table('pemesanans')
 		->join('pakets', 'pemesanans.paket_id', '=', 'pakets.id')
 		->join('users', 'pemesanans.user_id', '=', 'users.id')
 		->select('pemesanans.*','pakets.nama_paket','users.name')
 		->where('pemesanans.id', $pem)
 		->orderBy('pemesanans.id','DESC')
 		->first();
-       	
-        $this->_sendEmailGuide($pemesanan_pengunjung);
+
+		$this->_sendEmailGuide($pemesanan_pengunjung);
 
 	}
 
@@ -429,8 +485,8 @@ class AdminController extends Controller
 
 		foreach ($guide as $key => $value) {
 
-		$message = new \App\Mail\OrderShippedGuide($pemesanan_pengunjung);
-		\Mail::to($value->email)->send($message);
+			$message = new \App\Mail\OrderShippedGuide($pemesanan_pengunjung);
+			\Mail::to($value->email)->send($message);
 		}
 		
 	}
@@ -552,6 +608,69 @@ class AdminController extends Controller
 
 			'pemesanan' => $pemesanan
 		]);
+	}
+
+
+	public function admin_profil()
+	{
+
+		$profil_admin = User::where('id',Auth::user()->id)->get();
+
+		return view('admin.profil-admin', compact('profil_admin'));
+	}
+
+	public function proses_ganti_foto_profil_admin(Request $request ,$id)
+	{
+		$foto_admin = User::find($id);
+		//dd($foto_admin);
+
+		File::delete('uploads/foto_pengelola/'.$foto_admin->photo);
+		$foto_admin->delete();  
+
+		if($request->hasFile('photo')){
+			$file = $request->file('photo');
+			$filename = $file->getClientOriginalName();
+			$file->move('uploads/foto_pengelola/', $filename);
+			$foto_admin->photo = $filename;
+
+		}else{
+			echo "Gagal upload gambar";
+		}
+
+		$foto_admin->save();
+
+		return redirect('/admin-profil')->with('success', 'Foto profil berhasil diupdate');
+
+	}
+
+
+	public function pelunasan_pembayaran(Request $request ,$id)
+	{
+
+		$pemesanan = Pemesanan::find($id);
 		
+		$data = [
+			'jumlah_pembayaran' => $pemesanan->jumlah_pembayaran + $pemesanan->jumlah_pembayaran,
+			'jenis_pembayaran' => 'lunas'
+
+		];
+
+        $pemesanan->update($data);
+        if($request->hasFile('bukti_pelunasan')){
+			$file = $request->file('bukti_pelunasan');
+			$filename = $file->getClientOriginalName();
+			$file->move('uploads/bukti_pelunasan/', $filename);
+			$pemesanan->bukti_pelunasan = $filename;
+
+		}else{
+			echo "Gagal upload gambar";
+		}
+
+		$pemesanan->save();
+    
+
+		return redirect('/admin-data_pembayaran_pengunjung')->with('success', 'Pembayaran berhasil dilunasi');
+
 	}
 }
+	

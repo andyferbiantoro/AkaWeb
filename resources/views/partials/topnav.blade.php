@@ -37,7 +37,14 @@
           
             <li class="user-profile header-notification">
                 <a href="#!" class="waves-effect waves-light">
-                    <img src="assets/images/avatar-4.jpg" class="img-radius" alt="User-Profile-Image">
+                    @if(Auth::user()->role_id == 1)
+                    <img src="{{asset('uploads/foto_pengunjung/'.Auth::user()->photo)}}" class="img-radius" alt="User-Profile-Image">
+                    @endif
+
+                    @if(Auth::user()->role_id == 2 || Auth::user()->role_id == 3 || Auth::user()->role_id == 4) 
+                    <img src="{{asset('uploads/foto_pengelola/'.Auth::user()->photo)}}" class="img-radius" alt="User-Profile-Image">
+                    @endif
+
                     <span>{{Auth::user()->name}}</span>
                     <i class="ti-angle-down"></i>
                 </a>
@@ -63,12 +70,14 @@
                                         </a>
                                     </li> -->
                                     @if(Auth::user()->role_id == 1)
+                                        
                                     <li class="waves-effect waves-light">
                                         <a href="{{ route('logout-pengunjung') }}">
                                             <i class="ti-layout-sidebar-left"></i> Logout
                                         </a>
                                     </li>
                                     @endif
+                                    
                                     @if(Auth::user()->role_id == 2)
                                     <li class="waves-effect waves-light">
                                         <a href="{{ route('logout-admin') }}">

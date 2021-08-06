@@ -159,8 +159,7 @@
                                 <hr/>
                                 <div class="row">
                                     <div class="col-md-10">
-                                        <p class="text-inverse text-left m-b-0">Sudah Punya Akun ?</p>
-                                        <p class="text-inverse text-left"><a href="{{ route('login') }}"><b>Login</b></a></p>
+                                         <p class="text-inverse text-center"><b>Sudah punya akun ? <a href="{{ route('login') }}" style="color: #009970">Login</a></b></p>
                                     </div>
                                     <div class="col-md-2">
                                         <img src="assets/images/auth/Logo-small-bottom.png" alt="small-logo.png">

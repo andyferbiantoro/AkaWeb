@@ -94,33 +94,37 @@ Data Pengunjung
             
 
             <div class="form-group form-primary">
-                <input type="text" name="name" class="form-control">
+                <input type="text" name="name" id="name" class="form-control">
                 <span class="form-bar"></span>
                 <label class="float-label">Nama Pengunjung</label>
             </div>
             <div class="form-group form-primary">
-                <input type="email" name="email" class="form-control">
+                <input type="email" name="email" id="email" class="form-control">
                 <span class="form-bar"></span>
                 <label class="float-label">Email Pengunjung</label>
             </div>
             <div class="form-group form-primary">
-                <input type="text" name="alamat" class="form-control">
+                <input type="text" name="alamat" id="alamat" class="form-control">
                 <span class="form-bar"></span>
                 <label class="float-label">Alamat Pengunjung</label>
             </div>
             <div class="form-group form-primary">
-                <input type="password" name="password" class="form-control">
+                <input type="password" name="password" id="password" class="form-control">
                 <span class="form-bar"></span>
                 <label class="float-label">Password Pengunjung</label>
             </div>
             <div class="form-group form-primary">
                 <label style="color: #009970">Foto Pengunjung (Opsional)</label>
-                <input type="file" name="photo" class="form-control">
+                <input type="file" name="photo" id="photo" class="form-control">
                 <span class="form-bar"></span>
                 
             </div>
             <div class="row m-t-30">
-                <div class="col-md-12">
+                <div class="col-md-3">
+                 <button type="button" class="btn btn-danger btn-md btn-block waves-effect text-center m-b-20" data-dismiss="modal"  onclick="BatalFunction()">Batal</button>
+                </div>
+
+                <div class="col-md-3">
                     <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Submit</button>
                 </div>
             </div>
@@ -128,7 +132,7 @@ Data Pengunjung
         </form>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+      
 
     </div>
 </div>
@@ -170,6 +174,18 @@ Data Pengunjung
 
     function formSubmit() {
         $("#deleteForm").submit();
+    }
+
+
+     function BatalFunction() {
+        
+    document.getElementById("name").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("alamat").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("photo").value = "";
+
+  
     }
 </script>
 @endsection
