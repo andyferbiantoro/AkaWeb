@@ -234,25 +234,30 @@ class PengunjungController extends Controller
 
 	public function proses_ganti_foto_profil(Request $request ,$id)
 	{
+	
+
+
 		$foto_pengunjung = User::find($id);
-		//dd($foto_pengunjung);
 
-            File::delete('uploads/foto_pengunjung/'.$foto_pengunjung->photo);
-            $foto_pengunjung->delete();  
+		$input =[
+			'name' => $request->name,
+			'email' => $request->email,
+			'nohp' => $request->nohp,
+			'alamat' => $request->alamat
+		]; 
 
-		if($request->hasFile('photo')){
-			$file = $request->file('photo');
-			$filename = $file->getClientOriginalName();
-			$file->move('uploads/foto_pengunjung/', $filename);
-			$foto_pengunjung->photo = $filename;
-
-		}else{
-			echo "Gagal upload gambar";
+		if ($file = $request->file('photo')) {
+			if ($foto_pengunjung->photo) {
+				File::delete('uploads/foto_pengunjung/'.$foto_pengunjung->photo);
+			}
+			$nama_file = $file->getClientOriginalName();
+			$file->move(public_path() . '/uploads/foto_pengunjung/', $nama_file);  
+			$input['photo'] = $nama_file;
 		}
 
-		$foto_pengunjung->save();
+		$foto_pengunjung->update($input);
 
-		return redirect('/pengunjung-profil')->with('success', 'Foto profil berhasil diupdate');
+		return redirect('/pengunjung-profil')->with('success', 'Profil anda berhasil diupdate');
 
 	}
 
@@ -283,7 +288,7 @@ class PengunjungController extends Controller
 
     
 
-		return redirect('/pengunjung-data_pemesanan')->with('success', 'Pembayaran berhasil dilunasi');
+		return redirect('/pengunjung-data_pembayaran')->with('success', 'Pembayaran berhasil dilunasi');
 
 	}
 }

@@ -26,9 +26,9 @@ Data Pembayaran
             <div class="card">
               <div class="card-header">
                 <h5>Data Pembayaran</h5>
-                <button type="button" style="float: right;" class="btn btn-success right"  data-toggle="modal" data-target="#ModalTambahPembayaran" >
+               <!--  <button type="button" style="float: right;" class="btn btn-success right"  data-toggle="modal" data-target="#ModalTambahPembayaran" >
                   Tambah Pembayaran
-                </button>
+                </button> -->
               </div>
 
               <div class="card-block">
@@ -38,7 +38,6 @@ Data Pembayaran
                     <tr>
                       <th scope="col">No</th>
                       <th scope="col">Nama Pemesan</th>
-                      <th scope="col">Paket Wisata</th>
                       <th scope="col">Jumlah Pembayaran</th>
                       <th scope="col">Tanggal Pembayaran</th>
                       <th scope="col">Metode Pembayaran</th>
@@ -56,73 +55,92 @@ Data Pembayaran
                     <tr>
                       <td>{{ $no++ }}</td>
                       <td>{{$pembayaran->name}}</td>
-                      <td>{{$pembayaran->nama_paket}}</td>
                       <td>Rp. <?=number_format($pembayaran->jumlah_pembayaran, 0, ".", ".")?>,00</td>
                       <td>{{date("j F Y", strtotime($pembayaran->tanggal_pembayaran))}}</td>
                       <td>{{$pembayaran->metode_pembayaran}}</td>
+
                       <td>
-                       <a href="#" class="image_pembayaran"><img  src="{{asset('uploads/bukti_pembayaran/'.$pembayaran->bukti_pembayaran)}}" width="100px" height="100px"></a>
-                     </td>
+                        @if($pembayaran->metode_pembayaran == 'Bayar Ditempat' )
+                        <p style="color: green">Pembayaran Ditempat</p>
+                        @endif
+
+                        @if($pembayaran->metode_pembayaran == 'Transfer')
+                        <a href="#" class="image_pembayaran"><img  src="{{asset('uploads/bukti_pembayaran/'.$pembayaran->bukti_pembayaran)}}" width="100px" height="100px"></a>
+                        @endif
+                      </td>
+
+
                       <td>
-                       <a href="#" class="image_pelunasan"><img  src="{{asset('uploads/bukti_pelunasan/'.$pembayaran->bukti_pelunasan)}}" width="100px" height="100px"></a>
-                     </td>
+                        <!-- jika tidak ada bukti pelunasan, berarti pelunasan dilakukan di admin -->
+                        @if(empty($pembayaran->bukti_pelunasan) && $pembayaran->jenis_pembayaran == 'lunas')
+                        <p style="color: green">Pelunasan Ditempat</p>
+                        @endif
 
-                     <td>
-                      @if($pembayaran->status_pembayaran == 0)
-                      <a href="javascript:;" data-toggle="modal" onclick="deleteData({{$pembayaran->id}})" data-target="#VerifikasiModal">
-                        <button class="btn btn-danger btn-sm">Batalkan Pesanan</button>
-                      </a>
-                      @endif
+                        @if(empty($pembayaran->bukti_pelunasan) && $pembayaran->jenis_pembayaran == 'setengah_bayar')
+                        <p style="color: red">Menunggu Pelunasan</p>
+                        @endif
 
-                      @if( $pembayaran->status_pembayaran == 2)
-                     <p style="color: green">Sudah Terverifikasi</p>
-                      <!-- <button class="btn btn-success btn-sm">Pembayaran Lunas</button> -->
-                      @endif
-
-                      @if($pembayaran->status_pembayaran == 1)
-                      <p style="color: red">Belum Terverifikasi</p>
-                      <a href="javascript:;" data-toggle="modal" onclick="verifikasiData({{$pembayaran->id}})" data-target="#VerifikasiModal">
-                        <button class="btn btn-warning btn-sm">Verifikasi Pembayaran</button>
-                      </a>  
-                      @endif
-                    </td>
-
-                    <td>
-                      @if($pembayaran->jenis_pembayaran == 'setengah_bayar' && $pembayaran->status_pembayaran == 2)
-                      <p style="color: red">Pembayaran Setengah Bayar</p>
-                      <button class="btn btn-sm btn-info lunasi" title="Bayarkan">Lunasi Pembayaran sebesar Rp. <?=number_format($pembayaran->jumlah_pembayaran, 0, ".", ".")?>,00</button>
-                      @endif
-
-                      @if($pembayaran->jenis_pembayaran == 'setengah_bayar' && $pembayaran->status_pembayaran == 1)
-                      <p style="color: red">Pembayaran Setengah Bayar</p>
-                      <p style="color: red">Verifikasi untuk pelunasan</p>
-                      @endif
-                     
-
-                      @if($pembayaran->jenis_pembayaran == 'lunas')
-                      <p style="color: green">Pembayaran Lunas</p>
-                      @endif
+                        <!-- jika ada bukti pelunasan, berarti pelunasan dilakukan di pengunjung, karena harus uploasd bukti pelunasan -->
+                        @if(!empty($pembayaran->bukti_pelunasan) && $pembayaran->jenis_pembayaran == 'lunas')
+                        <a href="#" class="image_pelunasan"><img  src="{{asset('uploads/bukti_pelunasan/'.$pembayaran->bukti_pelunasan)}}" width="100px" height="100px"></a>
+                        @endif
+                      </td>
 
 
+                      <td>
+                        @if($pembayaran->status_pembayaran == 0)
+                        <a href="javascript:;" data-toggle="modal" onclick="deleteData({{$pembayaran->id}})" data-target="#VerifikasiModal">
+                          <button class="btn btn-danger btn-sm">Batalkan Pesanan</button>
+                        </a>
+                        @endif
 
-                    </td>
-                    <td style="display: none">{{$pembayaran->pemesanan_id}}</td>
-                    <td style="display: none">{{$pembayaran->jumlah_pembayaran}}</td>
+                        @if( $pembayaran->status_pembayaran == 2)
+                        <p style="color: green">Sudah Terverifikasi</p>
+                        <!-- <button class="btn btn-success btn-sm">Pembayaran Lunas</button> -->
+                        @endif
 
-                  </tr>
-                  @endforeach
+                        @if($pembayaran->status_pembayaran == 1)
+                        <p style="color: red">Belum Terverifikasi</p>
+                        <a href="javascript:;" data-toggle="modal" onclick="verifikasiData({{$pembayaran->id}})" data-target="#VerifikasiModal">
+                          <button class="btn btn-warning btn-sm">Verifikasi Pembayaran</button>
+                        </a>  
+                        @endif
+                      </td>
 
-                </tbody>
-              </table>
+                      <td>
+                        @if($pembayaran->jenis_pembayaran == 'setengah_bayar' && $pembayaran->status_pembayaran == 2)
+                        <p style="color: red">Pembayaran Setengah Bayar</p>
+                        <button class="btn btn-sm btn-info lunasi" title="Bayarkan">Lunasi Pembayaran sebesar Rp. <?=number_format($pembayaran->jumlah_pembayaran, 0, ".", ".")?>,00</button>
+                        @endif
+
+                        @if($pembayaran->jenis_pembayaran == 'setengah_bayar' && $pembayaran->status_pembayaran == 1)
+                        <p style="color: red">Pembayaran Setengah Bayar</p>
+                        <p style="color: red">Verifikasi untuk pelunasan</p>
+                        @endif
+
+
+                        @if($pembayaran->jenis_pembayaran == 'lunas')
+                        <p style="color: green">Pembayaran Lunas</p>
+                        @endif
+                      </td>
+
+                      <td style="display: none">{{$pembayaran->pemesanan_id}}</td>
+                      <td style="display: none">{{$pembayaran->jumlah_pembayaran}}</td>
+
+                    </tr>
+                    @endforeach
+
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <!-- Page-body end -->
   </div>
-  <!-- Page-body end -->
-</div>
-<div id="styleSelector"> </div>
+  <div id="styleSelector"> </div>
 </div>
 </div>
 
@@ -142,7 +160,7 @@ Data Pembayaran
         </button>
       </div>
       <div class="modal-body">
-        
+
 
       </div>
     </div>
@@ -289,7 +307,7 @@ Data Pembayaran
     <form action="" id="pelunasanForm" method="post" enctype="multipart/form-data">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Lakukan Pelunasan </h5>
+          <h5 class="modal-title">Lakukan Pelunasan dari Admin</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -298,11 +316,7 @@ Data Pembayaran
           {{ csrf_field() }}
           {{ method_field('POST') }}
 
-          <div class="form-group form-success">
-            <label style="color: #009970">Bukti Pelunasan</label>
-            <input type="file" name="bukti_pelunasan" id="bukti_pelunasan" class="form-control">
-            <span class="form-bar"></span>
-          </div>
+
 
           <button type="button" class="btn btn-secondary float-right" data-dismiss="modal">Batal</button>
           <button type="submit" name="" class="btn btn-info float-right mr-2"  onclick="pelunasanForm()">Lunasi</button>
@@ -332,13 +346,13 @@ Data Pembayaran
   }
 
   function BatalFunction() {
-        
+
     document.getElementById("pengunjung").selectedIndex = "0";
     document.getElementById("tanggal_pembayaran").value = "";
     document.getElementById("metode_pembayaran").selectedIndex = "0";
     document.getElementById("bukti_pembayaran").value = "";
-  
-    }
+
+  }
 
   function verifikasiData(id) {
     var id = id;
@@ -354,38 +368,38 @@ Data Pembayaran
 
 
 
- <script>
-    $(document).ready(function() {
-      var table = $('#dataTable').DataTable();
-      table.on('click', '.lunasi', function() {
-        $tr = $(this).closest('tr');
-        if ($($tr).hasClass('child')) {
-          $tr = $tr.prev('.parent');
-        }
-        var data = table.row($tr).data();
-        console.log(data);
-        $('#pelunasanForm').attr('action','admin-pelunasan_pembayaran/'+ data[10]);
-        $('#PelunasanModal').modal('show');
-      });
+<script>
+  $(document).ready(function() {
+    var table = $('#dataTable').DataTable();
+    table.on('click', '.lunasi', function() {
+      $tr = $(this).closest('tr');
+      if ($($tr).hasClass('child')) {
+        $tr = $tr.prev('.parent');
+      }
+      var data = table.row($tr).data();
+      console.log(data);
+      $('#pelunasanForm').attr('action','admin-pelunasan_pembayaran/'+ data[9]);
+      $('#PelunasanModal').modal('show');
     });
-  </script>
-
-
-  <script>
-    $(document).ready(function() {
-        var table = $('#dataTable').DataTable();
-        table.on('click', '.image_pembayaran', function() {
-            $tr = $(this).closest('tr');
-            if ($($tr).hasClass('child')) {
-                $tr = $tr.prev('.parent');
-            }
-            var data = table.row($tr).data();
-            console.log(data);
-            $('#bukti_pembayaran').val(data[6]);
-            $('#BuktiPembayaranModal').modal('show');
-        });
-    });
+  });
 </script>
-  @endsection
+
+
+<script>
+  $(document).ready(function() {
+    var table = $('#dataTable').DataTable();
+    table.on('click', '.image_pembayaran', function() {
+      $tr = $(this).closest('tr');
+      if ($($tr).hasClass('child')) {
+        $tr = $tr.prev('.parent');
+      }
+      var data = table.row($tr).data();
+      console.log(data);
+      $('#bukti_pembayaran').val(data[6]);
+      $('#BuktiPembayaranModal').modal('show');
+    });
+  });
+</script>
+@endsection
 
 @endsection

@@ -51,7 +51,7 @@ Data Pengunjung
                                     <tr>
                                       <td>{{ $no++ }}</td>
                                       <td>
-                                        <!-- <img src="{{asset('uploads/foto_pengunjung/'.$pengunjung->photo)}}" width="100px" height="100px" style="border-radius: 0%;"> -->
+                                        <img src="{{asset('uploads/foto_pengunjung/'.$pengunjung->photo)}}" width="100px" height="100px" style="border-radius: 0%;">
                                     </td>
                                     <td>{{$pengunjung->name}}</td>
                                     <td>{{$pengunjung->email}}</td>

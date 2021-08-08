@@ -196,6 +196,10 @@ Data Pesanan Pengunjung
              <span class="form-bar"></span>
            </div>
 
+           <div class="form-group">
+            <input type="hidden" class="form-control" id="jenis_pembayaran_reguler" disabled="" name="jenis_pembayaran" value="lunas" />
+          </div>
+
            <div class="form-group form-success">
             <label style="color: #009970">Jumlah Bayar</label>
             <input type="number" id="jumlah_bayar" readonly="" name="jumlah_pembayaran" class="form-control" required="">
@@ -289,17 +293,17 @@ Data Pesanan Pengunjung
 
         <div class="form-group form-success">
           <label style="color: #009970">Metode Pembayaran</label>
-          <select name="metode_pembayaran" class="form-control" required="">
+          <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required="" onchange="MetodePembayaranFunction()">
            <option selected disabled> -- Pilih Metode Pembayaran -- </option>
-           <option>Transfer</option>
-           <option>Cash</option>
+           <option value="Transfer">Transfer</option>
+           <option value="Bayar Ditempat">Bayar Ditempat</option>
          </select>
          <span class="form-bar"></span>
        </div>
 
        <div class="form-group form-success">
         <label style="color: #009970">Bukti Pembayaran</label>
-        <input type="file" name="bukti_pembayaran"  required="" class="form-control">
+        <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" disabled="" required="" class="form-control">
         <span class="form-bar"></span>
       </div>
 
@@ -369,13 +373,14 @@ Data Pesanan Pengunjung
     var paket_wisata = document.querySelector("#paket_wisata");
     var reguler_paket = document.querySelector("#reguler_paket");
     var jenis_pembayaran = document.querySelector("#jenis_pembayaran");
+    var jenis_pembayaran_reguler = document.querySelector("#jenis_pembayaran_reguler");
     var jumlah_orang_reguler = document.querySelector("#jumlah_orang_reguler");
     var jumlah_orang = document.querySelector("#jumlah_orang");
 
     if(kategori_pemesanan == "reguler"){
      paket_wisata.setAttribute("disabled", "");//menambahkan atribut disabled di form jika pilih paket reguler
-     document.getElementById("jenis_pembayaran").selectedIndex = "1";
-     jenis_pembayaran.removeAttribute("disabled");
+     jenis_pembayaran_reguler.removeAttribute("disabled");
+     jenis_pembayaran.setAttribute("disabled","");
      reguler_paket.removeAttribute("disabled");
      jumlah_orang_reguler.removeAttribute("disabled");
      jumlah_orang.setAttribute("disabled", "");
@@ -384,6 +389,7 @@ Data Pesanan Pengunjung
    }else {
     paket_wisata.removeAttribute("disabled");//atribud disabled dihilangkan jika pilih jenis paket non-reguler
     jenis_pembayaran.removeAttribute("disabled");
+    jenis_pembayaran_reguler.setAttribute("disabled","");
     reguler_paket.setAttribute("disabled","");
     jumlah_orang.removeAttribute("disabled");
     jumlah_orang_reguler.setAttribute("disabled", "");
@@ -430,6 +436,18 @@ function JanisBayarFunction(){
  }else {
    document.getElementById("jumlah_bayar").value = harga_total;
  }
+}
+
+
+function MetodePembayaranFunction(){
+var metode_pembayaran = document.getElementById("metode_pembayaran").value;
+var bukti_pembayaran = document.querySelector("#bukti_pembayaran");
+
+if(metode_pembayaran == "Transfer"){    
+     bukti_pembayaran.removeAttribute("disabled");
+   }else{
+    bukti_pembayaran.setAttribute("disabled", "");
+   }
 }
 </script>
 

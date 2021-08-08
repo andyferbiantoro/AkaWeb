@@ -484,6 +484,7 @@ class AdminController extends Controller
 		$guide = User::where('role_id',3)->get();
 
 		foreach ($guide as $key => $value) {
+		
 
 			$message = new \App\Mail\OrderShippedGuide($pemesanan_pengunjung);
 			\Mail::to($value->email)->send($message);
@@ -647,28 +648,15 @@ class AdminController extends Controller
 	public function pelunasan_pembayaran(Request $request ,$id)
 	{
 
-		$pemesanan = Pemesanan::find($id);
+		$pemesanan = Pemesanan::where('id',$id)->first();
 		
-		$data = [
-			'jumlah_pembayaran' => $pemesanan->jumlah_pembayaran + $pemesanan->jumlah_pembayaran,
-			'jenis_pembayaran' => 'lunas'
+        $data = [
+                'jumlah_pembayaran' => $pemesanan->jumlah_pembayaran + $pemesanan->jumlah_pembayaran,
+                'jenis_pembayaran' => 'lunas'
+            ];
 
-		];
-
+        
         $pemesanan->update($data);
-        if($request->hasFile('bukti_pelunasan')){
-			$file = $request->file('bukti_pelunasan');
-			$filename = $file->getClientOriginalName();
-			$file->move('uploads/bukti_pelunasan/', $filename);
-			$pemesanan->bukti_pelunasan = $filename;
-
-		}else{
-			echo "Gagal upload gambar";
-		}
-
-		$pemesanan->save();
-    
-
 		return redirect('/admin-data_pembayaran_pengunjung')->with('success', 'Pembayaran berhasil dilunasi');
 
 	}

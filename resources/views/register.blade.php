@@ -119,21 +119,31 @@
                                         <h3 class="text-center txt-primary">REGISTER</h3>
                                     </div>
                                 </div>
+                                
                                 <div class="form-group form-primary">
                                     <input type="text" name="name" class="form-control">
                                     <span class="form-bar"></span>
                                     <label class="float-label">Nama</label>
                                 </div>
+
                                 <div class="form-group form-primary">
                                     <input type="email" name="email" class="form-control">
                                     <span class="form-bar"></span>
                                     <label class="float-label">Email</label>
                                 </div>
+
+                                <div class="form-group form-primary">
+                                  <input type="text" name="text" class="form-control">
+                                  <span class="form-bar"></span>
+                                  <label class="float-label">No Telepon</label>
+                                </div>
+
                                 <div class="form-group form-primary">
                                     <input type="text" name="alamat" class="form-control">
                                     <span class="form-bar"></span>
                                     <label class="float-label">Alamat</label>
                                 </div>
+
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group form-primary">
@@ -142,6 +152,7 @@
                                             <label class="float-label">Password</label>
                                         </div>
                                     </div>
+
                                     <div class="col-sm-6">
                                         <div class="form-group form-primary">
                                             <input type="password" name="repassword" class="form-control">

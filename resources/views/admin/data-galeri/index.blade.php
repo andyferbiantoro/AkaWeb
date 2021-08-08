@@ -48,7 +48,7 @@ Data Galeri
                                     <tr>
                                       <td>{{ $no++ }}</td>
                                       <td>
-                                        <img src="{{asset('uploads/foto_galeri/'.$galeri->photo)}}" width="100px" height="100px" style="border-radius: 0%;">
+                                        <img src="{{asset('uploads/foto_galeri/'.$galeri->photo)}}"  width="100px" height="100px" style="border-radius: 0%;">
                                     </td>
                                     
                                     <td>
@@ -90,7 +90,7 @@ Data Galeri
 
             <div class="form-group form-primary">
                <label style="color: #009970">Foto Galeri</label>
-               <input type="file" name="photo" class="form-control">
+               <input type="file" name="photo" required="" class="form-control">
                <span class="form-bar"></span>
 
            </div>

@@ -44,31 +44,34 @@ Profil Pengunjung
 
                             <div class="form-group">
                               <label for="photo"> Ganti Foto Profil</label>
-                              <input type="file" class="form-control" id="photo" name="photo" placeholder=" " required=""  />
+                              <input type="file" class="form-control" id="photo" name="photo" placeholder=" "   />
                             </div> 
 
-                            <button class="btn btn-primary">Ganti Foto Profil</button>
+                             <div class="form-group">
+                              <label for="name"> Nama</label>
+                              <input type="text" class="form-control" id="name" name="name" placeholder=" "  value="{{$peng->name}}"  />
+                            </div> 
+
+                             <div class="form-group">
+                              <label for="email"> Email</label>
+                              <input type="email" class="form-control" id="email" name="email" placeholder=" "   value="{{$peng->email}}"/>
+                            </div> 
+
+                            <div class="form-group">
+                              <label for="nohp"> No Telepon</label>
+                              <input type="nohp" class="form-control" id="nohp" name="nohp" placeholder=" "   value="{{$peng->nohp}}"/>
+                            </div> 
+
+                             <div class="form-group">
+                              <label for="alamat"> Alamat</label>
+                              <input type="text" class="form-control" id="alamat" name="alamat" placeholder=" "  value="{{$peng->alamat}}" />
+                            </div> 
+
+                            <button class="btn btn-primary">Perbarui Profil</button>
                           </form>
                         <br><br><br>
                     </div>
-                    <tr>
-                      <th>Nama  </th>
-                      <th> : </th>
-                      <td>{{$peng->name}}</td>
-                    </tr>    
-
-                     <tr>
-                      <th>Email  </th>
-                      <th> : </th>
-                      <td>{{$peng->email}}</td>
-                    </tr>    
-
-                     <tr>
-                      <th>Alamat  </th>
-                      <th> : </th>
-                      <td>{{$peng->alamat}}</td>
-                    </tr>    
-
+          
                     @endforeach
                   </table>
                 </div>

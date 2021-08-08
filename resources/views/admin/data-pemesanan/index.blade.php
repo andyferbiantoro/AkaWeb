@@ -39,14 +39,15 @@ Data Pemesanan
                       <th scope="col">No</th>
                       <th style="display: none;">id</th>
                       <th scope="col">Nama Pemesan</th>
-                      <th scope="col">Nama paket</th>
-                      <th scope="col">Kategori Pesanan</th>
-                      <th scope="col">Tanggal Pemesanan</th>
+                      <th scope="col" style="display: none;">Nama paket</th>
+                      <th scope="col" style="display: none;">Kategori Pesanan</th>
+                      <th scope="col" style="display: none">Tanggal Pemesanan</th>
                       <th scope="col">Tanggal Berkunjung</th>
                       <th scope="col">Pukul Kunjungan</th>
                       <th scope="col">Jumlah Pengunjung</th>
-                      <th scope="col">Jumlah Pembayaran</th>
+                      <th scope="col" style="display: none;">Jumlah Pembayaran</th>
                       <th scope="col">Status</th>
+                      <th scope="col">Detail Pesanan</th>
 
                     </tr>
                   </thead>
@@ -57,29 +58,32 @@ Data Pemesanan
                       <td>{{ $no++ }}</td>
                       <td style="display: none;">{{$pemesanan->id}}</td>
                       <td>{{$pemesanan->name}}</td>
-                      <td>{{$pemesanan->nama_paket}}</td>
-                      <td>{{$pemesanan->kategori_pemesanan}}</td>
-                      <td>{{date("j F Y", strtotime($pemesanan->created_at))}}</td>
+                      <td style="display: none;">{{$pemesanan->nama_paket}}</td>
+                      <td style="display: none;">{{$pemesanan->kategori_pemesanan}}</td>
+                      <td style="display: none;">{{date("j F Y", strtotime($pemesanan->created_at))}}</td>
                       <td>{{date("j F Y", strtotime($pemesanan->tanggal_berkunjung))}}</td>
                       <td>{{date("H:i", strtotime($pemesanan->pukul_kunjungan))}} WIB</td>
                       <td>{{$pemesanan->jumlah_pengunjung}} Orang</td>
-                      <td>Rp. <?=number_format($pemesanan->jumlah_pembayaran, 0, ".", ".")?>,00</td>
+                      <td style="display: none;">Rp. <?=number_format($pemesanan->jumlah_pembayaran, 0, ".", ".")?>,00</td>
                       <td>
                         @if($pemesanan->status_pemesanan == 0)
                         <a href="javascript:;" data-toggle="modal" onclick="deleteData({{$pemesanan->id}})" data-target="#DeleteModal">
                           <button class="btn btn-danger btn-sm">Batalkan Pesanan</button>
                         </a>
-                        <button class="btn btn-warning btn-sm edit">Pembayaran</button>
+                        <button class="btn btn-warning btn-sm pembayaran">Pembayaran</button>
                         @endif
 
                         @if($pemesanan->status_pemesanan == 1 && $pemesanan->jenis_pembayaran == 'setengah_bayar' )
-                        <button class="btn btn-success btn-sm">Pemesanan Berhasil</button>
-                        <button class="btn btn-primary btn-sm">Setengah Bayar, Perlu pelunasan</button>
+                        <p style="color: green">Pesanan sudah dibayar</p>
+                        <p style="color: blue">Setengah Bayar, Perlu pelunasan</p>
                         @endif
 
                         @if($pemesanan->status_pemesanan == 1 && $pemesanan->jenis_pembayaran == 'lunas' )
-                        <button class="btn btn-success btn-sm">Pemesanan Berhasil</button>
+                       <p style="color: green">Pesanan sudah dibayar</p>
                         @endif
+                      </td>
+                      <td>
+                        <button class="btn btn-warning btn-sm fa fa-eye detail" title="Detail Pesanan"></button>
                       </td>
 
                     </tr>
@@ -249,14 +253,6 @@ Data Pemesanan
           <input type="hidden"  name="pemesanan_id" id="pemesanan_id" class="form-control">
         </div>
 
-       <!--     
-
-         <div class="form-group form-success">
-            <label style="color: #009970">Nama Paket</label>
-            <input type="text" id="paket_dipesan" class="form-control">
-            <span class="form-bar"></span>
-          </div> -->
-
           <div class="form-group form-success">
             <label style="color: #009970">Tanggal Pembayaran</label>
             <input type="date"  name="tanggal_pembayaran" id="tanggal_pembayaran" class="form-control" required="">
@@ -266,17 +262,17 @@ Data Pemesanan
 
           <div class="form-group form-success">
             <label style="color: #009970">Metode Pembayaran</label>
-            <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required="">
+            <select name="metode_pembayaran" id="metode_pembayaran" class="form-control" required="" onchange="MetodePembayaranFunction()">
              <option selected disabled> -- Pilih Metode Pembayaran -- </option>
-             <option>Transfer</option>
-             <option>Cash</option>
+             <option value="Transfer">Transfer</option>
+             <option value="Bayar Ditempat">Bayar Ditempat</option>
            </select>
            <span class="form-bar"></span>
          </div>
 
          <div class="form-group form-success">
           <label style="color: #009970">Bukti Pembayaran</label>
-          <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" class="form-control" required="">
+          <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" disabled="" required="" class="form-control">
           <span class="form-bar"></span>
         </div>
 
@@ -311,7 +307,6 @@ Data Pemesanan
   <div class="modal-dialog ">
     <!-- Modal content-->
     <form action="" id="deleteForm" method="post">
-
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Batalkan Pesanan</h5>
@@ -330,6 +325,95 @@ Data Pemesanan
     </form>
   </div>
 </div> 
+
+
+
+
+
+
+
+<!-- Modal Detail Pemesanan -->
+<div class="modal fade" id="ModalDetailPemesanan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Detail Pemesanan</h5>
+
+      </div>
+      <div class="modal-body">
+
+       <form class="form-material" id=""  action="" method="" enctype="multipart/form-data">
+         {{csrf_field()}}
+
+         <div class="form-group form-success">
+          <label style="color: #009970">Nama Pemesan</label>
+          <input type="text" id="nama_pemesan" class="form-control" readonly="">
+          <span class="form-bar"></span>
+        </div>
+
+        <div class="form-group form-success">
+          <label style="color: #009970">Nama Paket</label>
+          <input type="text" id="nama_paket" class="form-control" readonly="">
+          <span class="form-bar"></span>
+        </div>
+
+
+        <div class="form-group form-success">
+          <label style="color: #009970">Kategori Pemesan</label>
+          <input type="text" id="kategori_pemesan" class="form-control" readonly="">
+          <span class="form-bar"></span>
+        </div>
+
+
+        <div class="form-group form-success">
+          <label style="color: #009970">Tanggal Pemesanan</label>
+          <input type="text" id="tanggal_pemesanan" class="form-control" readonly="">
+          <span class="form-bar"></span>
+        </div>
+
+
+        <div class="form-group form-success">
+          <label style="color: #009970">Tanggal Berkunjung</label>
+          <input type="text" id="tanggal_berkunjung" class="form-control" readonly="">
+          <span class="form-bar"></span>
+        </div>
+
+
+        <div class="form-group form-success">
+          <label style="color: #009970">Pukul Kunjungan</label>
+          <input type="text" id="pukul_kunjungan" class="form-control" readonly="">
+          <span class="form-bar"></span>
+        </div>
+
+
+        <div class="form-group form-success">
+          <label style="color: #009970">Jumlah Pengunjung</label>
+          <input type="text" id="jumlah_pengunjung" class="form-control" readonly="">
+          <span class="form-bar"></span>
+        </div>
+
+
+        <div class="form-group form-success">
+          <label style="color: #009970">Jumlah Pembayaran</label>
+          <input type="text" id="jumlah_pembayaran" class="form-control" readonly="">
+          <span class="form-bar"></span>
+        </div>
+        
+          
+        </div>
+      </form>
+
+    </div>
+    <div class="modal-footer">
+
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
 
 @section('js')
 <script type="text/javascript">
@@ -426,6 +510,18 @@ function BatalPembayaranFunction() {
   document.getElementById("bukti_pembayaran").value = "";
   
 }
+
+
+function MetodePembayaranFunction(){
+var metode_pembayaran = document.getElementById("metode_pembayaran").value;
+var bukti_pembayaran = document.querySelector("#bukti_pembayaran");
+
+if(metode_pembayaran == "Transfer"){    
+     bukti_pembayaran.removeAttribute("disabled");
+   }else{
+    bukti_pembayaran.setAttribute("disabled", "");
+   }
+}
 </script>
 
 
@@ -433,7 +529,7 @@ function BatalPembayaranFunction() {
 <script>
   $(document).ready(function() {
     var table = $('#dataTable').DataTable();
-    table.on('click', '.edit', function() {
+    table.on('click', '.pembayaran', function() {
       $tr = $(this).closest('tr');
       if ($($tr).hasClass('child')) {
         $tr = $tr.prev('.parent');
@@ -443,6 +539,29 @@ function BatalPembayaranFunction() {
       $('#pemesanan_id').val(data[1]);
       $('#nama_pengunjung').val(data[2]);
       $('#ModalTambahPembayaran').modal('show');
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function() {
+    var table = $('#dataTable').DataTable();
+    table.on('click', '.detail', function() {
+      $tr = $(this).closest('tr');
+      if ($($tr).hasClass('child')) {
+        $tr = $tr.prev('.parent');
+      }
+      var data = table.row($tr).data();
+      console.log(data);
+      $('#nama_pemesan').val(data[2]);
+      $('#nama_paket').val(data[3]);
+      $('#kategori_pemesan').val(data[4]);
+      $('#tanggal_pemesanan').val(data[5]);
+      $('#tanggal_berkunjung').val(data[6]);
+      $('#pukul_kunjungan').val(data[7]);
+      $('#jumlah_pengunjung').val(data[8]);
+      $('#jumlah_pembayaran').val(data[9]);
+      $('#ModalDetailPemesanan').modal('show');
     });
   });
 </script>
