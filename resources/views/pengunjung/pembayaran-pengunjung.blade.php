@@ -108,7 +108,12 @@ Data Pembayaran Pengunjung
                       <tr>
                         <th>Jenis Pembayaran</th>
                         <th>:</th>
-                        <td>{{$pemesanan->jenis_pembayaran}}</td>
+                        @if($pemesanan->jenis_pembayaran == 'lunas')
+                        <td>Bayar Penuh</td>
+                        @endif
+                        @if($pemesanan->jenis_pembayaran == 'setengah_bayar')
+                        <td>Bayar Setengah</td>
+                        @endif
                       </tr>
                     </table>
                   </div>

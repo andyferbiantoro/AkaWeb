@@ -41,6 +41,7 @@ Data Pengunjung
                                            <th scope="col">Nama</th>
                                            <th scope="col">Email</th>
                                            <th scope="col">Alamat</th>
+                                           <th scope="col">No Telepon</th>
                                            <th scope="col">Aksi</th>
 
                                        </tr>
@@ -56,6 +57,7 @@ Data Pengunjung
                                     <td>{{$pengunjung->name}}</td>
                                     <td>{{$pengunjung->email}}</td>
                                     <td>{{$pengunjung->alamat}}</td>
+                                    <td>{{$pengunjung->nohp}}</td>
                                     <td>
                                         <a href="javascript:;" data-toggle="modal" onclick="deleteData({{$pengunjung->id}})" data-target="#DeleteModal">
                                             <button class="btn btn-danger btn-sm fa fa-trash" title="Hapus"></button>
@@ -94,28 +96,28 @@ Data Pengunjung
             
 
             <div class="form-group form-primary">
-                <input type="text" name="name" id="name" class="form-control">
+                <input type="text" name="name" id="name" class="form-control" required="">
                 <span class="form-bar"></span>
                 <label class="float-label">Nama Pengunjung</label>
             </div>
             <div class="form-group form-primary">
-                <input type="email" name="email" id="email" class="form-control">
+                <input type="email" name="email" id="email" class="form-control" required="">
                 <span class="form-bar"></span>
                 <label class="float-label">Email Pengunjung</label>
             </div>
             <div class="form-group form-primary">
-                <input type="text" name="alamat" id="alamat" class="form-control">
+                <input type="text" name="alamat" id="alamat" class="form-control" required="">
                 <span class="form-bar"></span>
                 <label class="float-label">Alamat Pengunjung</label>
             </div>
             <div class="form-group form-primary">
-                <input type="password" name="password" id="password" class="form-control">
+                <input type="password" name="password" id="password" class="form-control" required="">
                 <span class="form-bar"></span>
                 <label class="float-label">Password Pengunjung</label>
             </div>
             <div class="form-group form-primary">
                 <label style="color: #009970">Foto Pengunjung (Opsional)</label>
-                <input type="file" name="photo" id="photo" class="form-control">
+                <input type="file" name="photo" id="photo" class="form-control" required="">
                 <span class="form-bar"></span>
                 
             </div>
@@ -147,7 +149,7 @@ Data Pengunjung
 
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Hapus Guide</h5>
+                    <h5 class="modal-title">Hapus Pengunjung</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -155,7 +157,7 @@ Data Pengunjung
                 <div class="modal-body">
                     {{ csrf_field() }}
                     {{ method_field('POST') }}
-                    <p>Apakah anda yakin ingin menghapus data guide ini ?</p>
+                    <p>Apakah anda yakin ingin menghapus data pengunjung ini ?</p>
                     <button type="button" class="btn btn-secondary float-right" data-dismiss="modal">Batal</button>
                     <button type="submit" name="" class="btn btn-danger float-right mr-2" data-dismiss="modal" onclick="formSubmit()">Hapus</button>
                 </div>

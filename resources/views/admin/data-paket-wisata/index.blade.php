@@ -104,23 +104,23 @@ Data Paket Wisata
             
 
             <div class="form-group form-primary">
-                <input type="text" name="nama_paket" id="nama_paket" class="form-control">
+                <input type="text" name="nama_paket" id="nama_paket" class="form-control" required="">
                 <span class="form-bar"></span>
                 <label class="float-label">Nama Paket</label>
             </div>
             <div class="form-group form-primary">
-                <input type="text" name="deskripsi_paket" id="deskripsi_paket" class="form-control">
+                <input type="text" name="deskripsi_paket" id="deskripsi_paket" class="form-control" required="">
                 <span class="form-bar"></span>
                 <label class="float-label">Deskripsi Paket</label>
             </div>
             <div class="form-group form-primary">
-                <input type="number" name="harga_paket" id="harga_paket" class="form-control">
+                <input type="number" name="harga_paket" id="harga_paket" class="form-control" required="">
                 <span class="form-bar"></span>
                 <label class="float-label">Harga Paket</label>
             </div>
             <div class="form-group form-primary">
                 <label >Foto Paket</label>
-                <input type="file" name="photo" id="photo" class="form-control">
+                <input type="file" name="photo" id="photo" class="form-control" required=""> 
                 <span class="form-bar"></span>
             </div>
             <div class="row m-t-30">

@@ -94,28 +94,28 @@ Data Guide
             
 
             <div class="form-group form-primary">
-                <input type="text" name="name" id="name" class="form-control">
+                <input type="text" name="name" id="name" class="form-control" required="">
                 <span class="form-bar"></span>
                 <label class="float-label">Nama Guide</label>
             </div>
             <div class="form-group form-primary">
-                <input type="email" name="email" id="email" class="form-control">
+                <input type="email" name="email" id="email" class="form-control" required="">
                 <span class="form-bar"></span>
                 <label class="float-label">Email Guide</label>
             </div>
             <div class="form-group form-primary">
-                <input type="text" name="alamat" id="alamat" class="form-control">
+                <input type="text" name="alamat" id="alamat" class="form-control" required="">
                 <span class="form-bar"></span>
                 <label class="float-label">Alamat Guide</label>
             </div>
             <div class="form-group form-primary">
-                <input type="password" name="password" id="password" class="form-control">
+                <input type="password" name="password" id="password" class="form-control" required="">
                 <span class="form-bar"></span>
                 <label class="float-label">Password Guide</label>
             </div>
             <div class="form-group form-primary">
                 <label style="color: #009970">Foto Guide</label>
-                <input type="file" name="photo" id="photo" class="form-control">
+                <input type="file" name="photo" id="photo" class="form-control" required="">
                 <span class="form-bar"></span>
             </div>
             <div class="row m-t-30">

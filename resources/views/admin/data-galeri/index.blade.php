@@ -95,17 +95,18 @@ Data Galeri
 
            </div>
            <div class="row m-t-30">
-            <div class="col-md-12">
-                <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Submit</button>
-            </div>
-        </div>
+  <div class="col-md-3">
+    <button type="button" class="btn btn-danger btn-md btn-block waves-effect text-center m-b-20" data-dismiss="modal">Batal</button>
+  </div>
+
+  <div class="col-md-3">
+    <button type="submit" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">Submit</button>
+  </div>
+</div>
         <hr/>
     </form>
 </div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
 
-</div>
 </div>
 </div>
 </div>

@@ -30,39 +30,83 @@ Laporan Pemesanan Paket
                             </div>
 
                             <div class="card-block">
-                                  <button class="btn btn-success" onclick="print('printPDF')">Cetak PDF</button>
-                                <br><br>
-                               <div class="table-responsive">
-                                 <div id="printPDF"> 
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">No</th>
-                                            <th scope="col">Nama Paket</th>
-                                            <th scope="col">Jumlah Pemesanan<th>
-                                        </tr>
-                                    </thead>
+                               <div class="row">
+                                <div class="col-lg-2"> 
+                                 <button class="btn btn-success" onclick="print('printPDF')">Cetak PDF</button>
+                             </div>
 
-                                    <tbody>
-                                        @php $no=1 @endphp
-                                       @foreach($paket_terlaris as $terlaris)
-                                        <tr>
-                                          <td>{{ $no++ }}</td>
-                                          <td>{{$terlaris->nama_paket}}</td>
-                                          <td>{{$terlaris->total_orderan}} Kali Dipesan</td>
-                                          <td></td>
-                                        </tr>
-                                        @endforeach
-                               </tbody>
-                            </table>
-                            </div>
+                             <div class="col-lg-10">
+                                <form action="{{route('kepala_desa-laporan_pemesanan_paket')}}" method="GET">
+                                  <div class="row">
+                                    <div class="col-lg-3">
+                                      <div class="form-row">
+                                        <label>Mulai Tanggal</label>
+                                        <input type="date" class="form-control" name="from" placeholder="Cari tanggal .." value="{{ old('from') }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
+                                 <div class="form-row">
+                                  <label>Sampai Tanggal</label>
+                                  <input type="date" class="form-control" name="to" placeholder="Cari tanggal .." value="{{ old('to') }}">
+                              </div>
+                          </div>
+
+                          <div class="col-lg-2">
+                            <label></label>
+                            <input type="submit" class="btn btn-primary" value="Filter Tanggal">
                         </div>
-                    </div>
-                </div>
+                    </div> 
+                </form>
             </div>
-        </div>
-    </div>
-    <!-- Page-body end -->
+        </div><br><br>
+        <div class="table-responsive">
+         <div id="printPDF"> 
+            
+            @if($from == null && $to == null)
+            <div class="row">
+              <div class="col-lg-12"><p style="color: red" class="text-center">Tanggal Tidak Difilter</p></div>
+          </div><br>
+          @endif
+          @if($from != null && $to != null)
+          <div class="row">
+              <div class="col-lg-3"></div>
+              <div class="col-lg-3">Mulai tanggal : {{date("j F Y", strtotime($from))}}</div>
+              <div class="col-lg-3">Sampai tanggal : {{date("j F Y", strtotime($to))}}</div>
+              <div class="col-lg-3"></div>
+          </div><br><br>
+          @endif
+          <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">No</th>
+                    <th scope="col">Tanggal Pemesanan</th>
+                    <th scope="col">Nama Paket</th>
+                    <th scope="col">Jumlah Pemesanan<th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @php $no=1 @endphp
+                    @foreach($paket_terlaris as $terlaris)
+                    <tr>
+                      <td>{{ $no++ }}</td>
+                      <td>{{$terlaris->created_at}}</td>
+                      <td>{{$terlaris->nama_paket}}</td>
+                      <td>{{$terlaris->total_orderan}} Kali Dipesan</td>
+                      <td></td>
+                  </tr>
+                  @endforeach
+              </tbody>
+          </table>
+      </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Page-body end -->
 </div>
 <div id="styleSelector"> </div>
 </div>
@@ -110,15 +154,15 @@ Laporan Pemesanan Paket
 
 
 <script type="text/javascript">
-function print(elem) {
-    var mywindow = window.open('', 'PRINT', 'height=1000,width=1200');
+    function print(elem) {
+        var mywindow = window.open('', 'PRINT', 'height=1000,width=1200');
 
-    mywindow.document.write('<html><head><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">');
-    mywindow.document.write('</head><body >');
-    mywindow.document.write('<h1 class="text-center">' + 'Laporan Pemesanan Paket' + '</h1>');
-    mywindow.document.write('<br><br>');
-    mywindow.document.write(document.getElementById(elem).innerHTML);
-    mywindow.document.write('</body></html>');
+        mywindow.document.write('<html><head><link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">');
+        mywindow.document.write('</head><body >');
+        mywindow.document.write('<h1 class="text-center">' + 'Laporan Pemesanan Paket' + '</h1>');
+        mywindow.document.write('<br><br>');
+        mywindow.document.write(document.getElementById(elem).innerHTML);
+        mywindow.document.write('</body></html>');
     mywindow.document.close(); // necessary for IE >= 10
     mywindow.focus(); // necessary for IE >= 10*/
 
@@ -127,7 +171,6 @@ function print(elem) {
 
     return true;
 
-    }
+}
 </script>
 @endsection
-    

@@ -42,7 +42,7 @@ Data Pembayaran
                       <th scope="col">Tanggal Pembayaran</th>
                       <th scope="col">Metode Pembayaran</th>
                       <th scope="col">Bukti Pembayaran</th>
-                      <th scope="col">Bukti Pelunasan (Setengah Bayar)</th>
+                      <th scope="col">Bukti Pelunasan (Bayar Setengah)</th>
                       <th scope="col">Status Pembayaran</th>
                       <th scope="col">Jenis Pembayaran</th>
                       <th style="display: none;">id (hidden)</th>
@@ -65,7 +65,14 @@ Data Pembayaran
                         @endif
 
                         @if($pembayaran->metode_pembayaran == 'Transfer')
-                        <a href="#" class="image_pembayaran"><img  src="{{asset('uploads/bukti_pembayaran/'.$pembayaran->bukti_pembayaran)}}" width="100px" height="100px"></a>
+                        <!-- <a href="#" id="pop">
+                          <img id="imageresource" src="{{asset('uploads/bukti_pembayaran/'.$pembayaran->bukti_pembayaran)}}" style="width: 100px; height: 100px;">
+                          Klik untuk melihat
+                        </a> -->
+                         <img height="70" id="myImg" src="{{asset('uploads/bukti_pembayaran/'.$pembayaran->bukti_pembayaran)}}" data-toggle="modal" data-target="#myModal"></img>
+
+                        
+                        <!-- <img src="{{asset('uploads/bukti_pembayaran/'.$pembayaran->bukti_pembayaran)}}" id="myImage" width="100px" height="100px" data-toggle="modal" data-target="#imageModal"> -->
                         @endif
                       </td>
 
@@ -82,7 +89,11 @@ Data Pembayaran
 
                         <!-- jika ada bukti pelunasan, berarti pelunasan dilakukan di pengunjung, karena harus uploasd bukti pelunasan -->
                         @if(!empty($pembayaran->bukti_pelunasan) && $pembayaran->jenis_pembayaran == 'lunas')
-                        <a href="#" class="image_pelunasan"><img  src="{{asset('uploads/bukti_pelunasan/'.$pembayaran->bukti_pelunasan)}}" width="100px" height="100px"></a>
+
+                        <img height="70" id="myImg" src="{{asset('uploads/bukti_pelunasan/'.$pembayaran->bukti_pelunasan)}}" data-toggle="modal" data-target="#myModal"></img>
+                        
+
+                        <!-- <a href="#" class="image_pelunasan"><img  src="{{asset('uploads/bukti_pelunasan/'.$pembayaran->bukti_pelunasan)}}" width="100px" height="100px"></a> -->
                         @endif
                       </td>
 
@@ -109,12 +120,12 @@ Data Pembayaran
 
                       <td>
                         @if($pembayaran->jenis_pembayaran == 'setengah_bayar' && $pembayaran->status_pembayaran == 2)
-                        <p style="color: red">Pembayaran Setengah Bayar</p>
+                        <p style="color: red">Pembayaran Bayar Setengah</p>
                         <button class="btn btn-sm btn-info lunasi" title="Bayarkan">Lunasi Pembayaran sebesar Rp. <?=number_format($pembayaran->jumlah_pembayaran, 0, ".", ".")?>,00</button>
                         @endif
 
                         @if($pembayaran->jenis_pembayaran == 'setengah_bayar' && $pembayaran->status_pembayaran == 1)
-                        <p style="color: red">Pembayaran Setengah Bayar</p>
+                        <p style="color: red">Pembayaran Bayar Setengah</p>
                         <p style="color: red">Verifikasi untuk pelunasan</p>
                         @endif
 
@@ -330,9 +341,35 @@ Data Pembayaran
 
 
 
+<!-- Creates the bootstrap modal where the image will appear -->
+<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      </div>
+      <div class="modal-body text-center">
+        <img src="" id="imagepreview" style="width: 450px; height: auto;" >
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
 
 
 @section('js')
+<!-- modal menampilkan image -->
+<script type="text/javascript">
+  $("#pop").on("click", function() {
+   $('#imagepreview').attr('src', $('#imageresource').attr('src')); // here asign the image to the modal when the user click the enlarge link
+   $('#imagemodal').modal('show'); // imagemodal is the id attribute assigned to the bootstrap modal, then i use the show function
+});
+</script>
+
 <script type="text/javascript">
   function deleteData(id) {
     var id = id;

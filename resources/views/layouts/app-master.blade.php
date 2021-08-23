@@ -118,7 +118,22 @@
             </div>
         </div>
     </div>
-   
+
+
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="logoutLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img class="modal-content" id="img01">
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Required Jquery -->
     <script type="text/javascript" src="assets/js/jquery/jquery.min.js "></script>
@@ -138,6 +153,40 @@
     <script src="assets/js/vertical/vertical-layout.min.js "></script>
     
     <script type="text/javascript" src="assets/js/script.js "></script>
+    <script type="text/javascript">
+                $(document).ready(function() {
+                   
+                    var table = $('#dataTable').DataTable();
+
+                    var modal = document.getElementById("myModal");
+
+                    var modalImg = document.getElementById("img01");
+                    var captionText = document.getElementById("caption");
+                    
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            table.on('click', '#myImg', function (){
+
+                $tr = $(this).closest('tr');
+                if ($($tr).hasClass('child')) {
+                    $tr = $tr.prev('.parent');
+                }
+
+                var data = table.row($tr).data();
+                console.log(data);
+
+                modalImg.src = this.src;
+                captionText.innerHTML = data[3];
+
+
+                $('#myModal').modal('show');
+            });
+
+
+
+        });
+    </script>
     <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
     <script>
@@ -146,6 +195,8 @@
         });
 
     </script>
+
+
 
     @yield('js')
 </body>

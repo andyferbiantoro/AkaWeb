@@ -72,7 +72,12 @@ Data Pesanan Pengunjung
                               <td>{{date("j F Y", strtotime($pemesanan->tanggal_berkunjung))}}</td>
                               <td>{{date("H:i", strtotime($pemesanan->pukul_kunjungan))}} WIB</td>
                               <td>{{$pemesanan->jumlah_pengunjung}} Orang</td>
-                              <td>{{$pemesanan->jenis_pembayaran}}</td>
+                              @if($pemesanan->jenis_pembayaran == 'lunas')
+                                <td>Bayar Penuh</td>
+                              @endif
+                              @if($pemesanan->jenis_pembayaran == 'setengah_bayar')
+                                <td>Bayar Setengah</td>
+                              @endif
                               <td>Rp. <?=number_format($pemesanan->jumlah_pembayaran, 0, ".", ".")?>,00</td>
                               <td>
                                 @if($pemesanan->jenis_pembayaran == 'lunas' && $pemesanan->status_pemesanan == '0')
@@ -190,8 +195,8 @@ Data Pesanan Pengunjung
               <label style="color: #009970">Jenis Pembayaran</label>
               <select name="jenis_pembayaran" class="form-control"  disabled="" id="jenis_pembayaran" onchange="JanisBayarFunction()" required>
                <option selected disabled value=""> -- Pilih Jenis Pembayaran -- </option>
-               <option value="lunas">Lunas</option>
-               <option value="setengah_bayar">Setengah Bayar</option>
+               <option value="lunas">Bayar Penuh</option>
+               <option value="setengah_bayar">Bayar Setengah</option>
              </select>
              <span class="form-bar"></span>
            </div>

@@ -133,7 +133,7 @@
                                 </div>
 
                                 <div class="form-group form-primary">
-                                  <input type="text" name="text" class="form-control">
+                                  <input type="text" name="nohp" class="form-control">
                                   <span class="form-bar"></span>
                                   <label class="float-label">No Telepon</label>
                                 </div>

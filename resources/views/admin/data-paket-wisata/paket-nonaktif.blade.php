@@ -25,10 +25,10 @@ Data Paket Wisata
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <h5>Data Paket</h5>
-                                <button type="button" style="float: right;" class="btn btn-success right"  data-toggle="modal" data-target="#ModalTambahpaket" >
+                                <h5>Data Paket Non-Aktif</h5>
+                               <!--  <button type="button" style="float: right;" class="btn btn-success right"  data-toggle="modal" data-target="#ModalTambahpaket" >
                                     Tambah Paket
-                                </button>
+                                </button> -->
                                  <a href="{{route('admin-data_paket_wisata')}}"><button type="button"  class="btn btn-primary right"  >
                                     Lihat Paket Aktif
                                 </button></a>

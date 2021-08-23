@@ -271,6 +271,40 @@
 </ul>
 
 <ul class="pcoded-item pcoded-left-item">
+    <li class="pcoded-hasmenu {{(request()->is('kepala_desa-laporan_berkala_pengunjung')) ? 'active' : ''}}">
+        <a href="javascript:void(0)" class="waves-effect waves-dark">
+            <span class="pcoded-micon"><i class="ti-agenda"></i><b>BC</b></span>
+            <span class="pcoded-mtext">Laporan Berkala</span>
+            <span class="pcoded-mcaret"></span>
+        </a>
+        <ul class="pcoded-submenu">
+            <li class="{{(request()->is('kepala_desa-laporan_berkala_pengunjung')) ? 'active' : ''}}">
+                <a href="{{ route('kepala_desa-laporan_berkala_pengunjung') }}" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Laporan Berkala Pengunjung</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class="{{(request()->is('kepala_desa-laporan_berkala_pemesanan_paket')) ? 'active' : ''}}">
+                <a href="{{ route('kepala_desa-laporan_berkala_pemesanan_paket') }}" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Laporan Berkala Pemesanan Paket</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+            <li class="{{(request()->is('kepala_desa-laporan_berkala_pendapatan')) ? 'active' : ''}}">
+                <a href="{{ route('kepala_desa-laporan_berkala_pendapatan') }}" class="waves-effect waves-dark">
+                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                    <span class="pcoded-mtext">Laporan Berkala Pendapatan</span>
+                    <span class="pcoded-mcaret"></span>
+                </a>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+
+<ul class="pcoded-item pcoded-left-item">
     <li class="{{(request()->is('kepala_desa-profil')) ? 'active' : ''}}">
         <a href="{{ route('kepala_desa-profil') }}" class="waves-effect waves-dark">
             <span class="pcoded-micon"><i class="ti-user"></i><b>D</b></span>

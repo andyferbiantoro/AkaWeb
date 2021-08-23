@@ -57,6 +57,7 @@ class AdminController extends Controller
 		->select(DB::raw('paket_id, count(pemesanans.id) as total_orderan'))
 		->groupBy('paket_id')
 		->where('pemesanans.status_pemesanan', 1)
+		
 		->orderBy('total_orderan', 'DESC')
 		->get();
 
@@ -250,7 +251,7 @@ class AdminController extends Controller
 		]);  
 		$edit_status_paket->update($input);
 
-		return redirect()->back()->with('success', 'Data Guide Berhasil Dihapus');
+		return redirect('admin-data_paket_wisata_nonaktif')->with('success', 'Paket Wisata Berhasil Dinonaktifkan');
 	}
 
 
@@ -288,7 +289,7 @@ class AdminController extends Controller
 		]);  
 		$edit_status_paket->update($input);
 
-		return redirect()->back()->with('success', 'Data Guide Berhasil Dihapus');
+		return redirect('admin-data_paket_wisata')->with('success', 'Paket Wisata Berhasil Diaktifkan');
 	}
 
 
@@ -484,7 +485,7 @@ class AdminController extends Controller
 		$guide = User::where('role_id',3)->get();
 
 		foreach ($guide as $key => $value) {
-		
+
 
 			$message = new \App\Mail\OrderShippedGuide($pemesanan_pengunjung);
 			\Mail::to($value->email)->send($message);
@@ -494,65 +495,131 @@ class AdminController extends Controller
 
 
 
+	public function laporan_pengunjung(Request $request){
 
-	public function laporan_pengunjung(){
-		$laporan_pengunjung_hari = Pemesanan::whereDate('created_at','=', date('y-m-d'))
-		->where('status_pemesanan',1)
-		->count();
+		// $laporan_pengunjung_hari = Pemesanan::whereDate('created_at','=', date('y-m-d'))
+		// ->where('status_pemesanan',1)
+		// ->count();
 
-		$month = Carbon::now()->format('m');
-		$laporan_pengunjung_bulan = Pemesanan::whereMonth('created_at','=', $month)
-		->where('status_pemesanan',1)
-		->count();
+		// $month = Carbon::now()->format('m');
+		// $laporan_pengunjung_bulan = Pemesanan::whereMonth('created_at','=', $month)
+		// ->where('status_pemesanan',1)
+		// ->count();
 
-		$year = Carbon::now()->format('Y');
-		$laporan_pengunjung_tahun = Pemesanan::whereYear('created_at','=', $year)
-		->where('status_pemesanan',1)
-		->count();
+		// $year = Carbon::now()->format('Y');
+		// $laporan_pengunjung_tahun = Pemesanan::whereYear('created_at','=', $year)
+		// ->where('status_pemesanan',1)
+		// ->count();
 
+		$from = $request->from;
+		$to = $request->to;
 
-		return view('admin.data-laporan.laporan-pengunjung',compact('laporan_pengunjung_hari','laporan_pengunjung_bulan','laporan_pengunjung_tahun'));
-	}
+		if ($from == null && $to == null) {
+			$count_pengunjung = DB::table('pemesanans')
+			->join('users','pemesanans.user_id','=','users.id')
+			->select(DB::raw('pemesanans.created_at, count(pemesanans.created_at) as total_pengunjung'))
+		//->select('users.nama')
+			->groupby('created_at')
+			->get();
+		}else{
+			$count_pengunjung = DB::table('pemesanans')
+			->join('users','pemesanans.user_id','=','users.id')
+			->select(DB::raw('pemesanans.created_at, count(pemesanans.created_at) as total_pengunjung'))
+		//->select('users.nama')
+			->groupby('created_at')
+			->whereBetween('pemesanans.created_at', [$from, $to])
+			->get();
 
-
-	public function laporan_pemesanan_paket(){
-		$paket_terlaris = DB::table('pemesanans')
-		->join('pakets', 'pemesanans.paket_id', '=', 'pakets.id')
-		->select(DB::raw('paket_id, count(pemesanans.id) as total_orderan'))
-		->groupBy('paket_id')
-		->where('pemesanans.status_pemesanan', 1)
-		->orderBy('total_orderan', 'DESC')
-		->get();
-		
-		foreach ($paket_terlaris as $terlaris => $value) {
-			
-			$paket = Paket::where('id',$value->paket_id)->first();
-			$value->nama_paket = $paket->nama_paket;
 		}
 		
-		 // return $paket_terlaris;
-		return view('admin.data-laporan.laporan-pemesanan-paket',compact('paket_terlaris'));
+		return view('admin.data-laporan.laporan-pengunjung',compact('count_pengunjung','from','to'));
+	}
+
+	
+
+	public function laporan_pemesanan_paket(Request $request){
+
+		$from = $request->from;
+		$to = $request->to;
+
+
+		if ($from == null && $to == null) {
+			$paket_terlaris = DB::table('pemesanans')
+			->join('pakets', 'pemesanans.paket_id', '=', 'pakets.id')
+			->select(DB::raw('paket_id,pemesanans.created_at, count(pemesanans.id) as total_orderan'))
+			->groupBy('paket_id','pemesanans.created_at')
+			->where('pemesanans.status_pemesanan', 1)
+			->orderBy('total_orderan', 'DESC')
+			->get();
+
+			foreach ($paket_terlaris as $terlaris => $value) {
+
+				$paket = Paket::where('id',$value->paket_id)->first();
+				$value->nama_paket = $paket->nama_paket;
+			}
+		}else{
+			$paket_terlaris = DB::table('pemesanans')
+			->join('pakets', 'pemesanans.paket_id', '=', 'pakets.id')
+			->select(DB::raw('paket_id,pemesanans.created_at, count(pemesanans.id) as total_orderan'))
+			->groupBy('paket_id','pemesanans.created_at')
+			->where('pemesanans.status_pemesanan', 1)
+			->whereBetween('pemesanans.created_at', [$from, $to])
+			->orderBy('total_orderan', 'DESC')
+			->get();
+
+			foreach ($paket_terlaris as $terlaris => $value) {
+
+				$paket = Paket::where('id',$value->paket_id)->first();
+				$value->nama_paket = $paket->nama_paket;
+			}
+		}
+		
+		 //return $paket_terlaris;
+		return view('admin.data-laporan.laporan-pemesanan-paket',compact('paket_terlaris','from','to'));
 	}
 
 
-	public function laporan_pendapatan(){
+	public function laporan_pendapatan(Request $request){
 
-		$laporan_pendapatan_hari = Pemesanan::whereDate('created_at','=', date('y-m-d'))
-		->where('status_pemesanan',1)
-		->sum('jumlah_pembayaran');
+		// $laporan_pendapatan_hari = Pemesanan::whereDate('created_at','=', date('y-m-d'))
+		// ->where('status_pemesanan',1)
+		// ->sum('jumlah_pembayaran');
 
-		$month = Carbon::now()->format('m');
-		$laporan_pendapatan_bulan = Pemesanan::whereMonth('created_at','=', $month)
-		->where('status_pemesanan',1)
-		->sum('jumlah_pembayaran');
+		// $month = Carbon::now()->format('m');
+		// $laporan_pendapatan_bulan = Pemesanan::whereMonth('created_at','=', $month)
+		// ->where('status_pemesanan',1)
+		// ->sum('jumlah_pembayaran');
 
-		$year = Carbon::now()->format('Y');
-		$laporan_pendapatan_tahun = Pemesanan::whereYear('created_at','=', $year)
-		->where('status_pemesanan',1)
-		->sum('jumlah_pembayaran');
+		// $year = Carbon::now()->format('Y');
+		// $laporan_pendapatan_tahun = Pemesanan::whereYear('created_at','=', $year)
+		// ->where('status_pemesanan',1)
+		// ->sum('jumlah_pembayaran');
 
-		// return $laporan_pendapatan;
-		return view('admin.data-laporan.laporan-pendapatan',compact('laporan_pendapatan_hari','laporan_pendapatan_bulan','laporan_pendapatan_tahun'));
+		$from = $request->from;
+		$to = $request->to;
+
+		if ($from == null && $to == null) {
+			$data_pendapatan = DB::table('pemesanans')
+			->select(DB::raw('pemesanans.created_at, sum(jumlah_pembayaran) as total_pendapatan'))
+		//->select('users.nama')
+			->where('status_pemesanan',1)
+			->groupby('created_at')
+			->get();
+		}else{
+			$data_pendapatan = DB::table('pemesanans')
+			->select(DB::raw('pemesanans.created_at, sum(jumlah_pembayaran) as total_pendapatan'))
+		//->select('users.nama')
+			->where('status_pemesanan',1)
+			->groupby('created_at')
+			->whereBetween('pemesanans.created_at', [$from, $to])
+			->get();
+		}
+		
+
+
+
+		 //return $data_pendapatan;
+		return view('admin.data-laporan.laporan-pendapatan',compact('data_pendapatan','from','to'));
 	}
 
 
@@ -650,15 +717,14 @@ class AdminController extends Controller
 
 		$pemesanan = Pemesanan::where('id',$id)->first();
 		
-        $data = [
-                'jumlah_pembayaran' => $pemesanan->jumlah_pembayaran + $pemesanan->jumlah_pembayaran,
-                'jenis_pembayaran' => 'lunas'
-            ];
+		$data = [
+			'jumlah_pembayaran' => $pemesanan->jumlah_pembayaran + $pemesanan->jumlah_pembayaran,
+			'jenis_pembayaran' => 'lunas'
+		];
 
-        
-        $pemesanan->update($data);
+
+		$pemesanan->update($data);
 		return redirect('/admin-data_pembayaran_pengunjung')->with('success', 'Pembayaran berhasil dilunasi');
 
 	}
 }
-	
