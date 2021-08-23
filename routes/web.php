@@ -91,7 +91,7 @@ Route::group(['middleware' => ['auth', 'guide']],function(){
 	Route::get('/guide-beranda', 'GuideController@index')->name('guide-beranda');
 	Route::get('/guide-jadwal', 'GuideController@guide_jadwal')->name('guide-jadwal');
 	Route::get('/guide-profil', 'GuideController@guide_profil')->name('guide-profil'); 
-	Route::put('/guide-proses_ganti_foto_profil_guide/{id}', 'GuideController@proses_ganti_foto_profil_guide')->name('guide-proses_ganti_foto_profil_admin');
+	Route::put('/guide-proses_ganti_foto_profil_guide/{id}', 'GuideController@proses_ganti_foto_profil_guide')->name('guide-proses_ganti_foto_profil_guide');
 });
 
 

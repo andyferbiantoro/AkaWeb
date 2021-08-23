@@ -32,10 +32,11 @@ Profil Guide
                 <div class="row">
                   <div class="col-md-3"></div>
                   <div class="col-md-6">
-                    <table class="table table-striped">
+
+                  <table class="table table-striped">
                       @foreach($profil_guide as $guide)
                       <div class="text-center">
-                           <form method="post" action="{{url('guide-proses_ganti_foto_profil_guide',$guide->id)}}" enctype="multipart/form-data">
+                           <form method="post" action="{{route('guide-proses_ganti_foto_profil_guide',$guide->id)}}" enctype="multipart/form-data">
                              {{csrf_field()}}
                              {{method_field('PUT')}}
                              <span class="avatar">
@@ -44,31 +45,34 @@ Profil Guide
 
                             <div class="form-group">
                               <label for="photo"> Ganti Foto Profil</label>
-                              <input type="file" class="form-control" id="photo" name="photo" placeholder=" " required=""  />
+                              <input type="file" class="form-control" id="photo" name="photo" placeholder=" "   />
                             </div> 
 
-                            <button class="btn btn-primary">Ganti Foto Profil</button>
+                             <div class="form-group">
+                              <label for="name"> Nama</label>
+                              <input type="text" class="form-control" id="name" name="name" placeholder=" "  value="{{$guide->name}}"  />
+                            </div> 
+
+                             <div class="form-group">
+                              <label for="email"> Email</label>
+                              <input type="email" class="form-control" id="email" name="email" placeholder=" "   value="{{$guide->email}}"/>
+                            </div> 
+
+                            <div class="form-group">
+                              <label for="nohp"> No Telepon</label>
+                              <input type="nohp" class="form-control" id="nohp" name="nohp" placeholder=" "   value="{{$guide->nohp}}"/>
+                            </div> 
+
+                             <div class="form-group">
+                              <label for="alamat"> Alamat</label>
+                              <input type="text" class="form-control" id="alamat" name="alamat" placeholder=" "  value="{{$guide->alamat}}" />
+                            </div> 
+
+                            <button class="btn btn-primary">Perbarui Profil</button>
                           </form>
                         <br><br><br>
                     </div>
-                    <tr>
-                      <th>Nama  </th>
-                      <th> : </th>
-                      <td>{{$guide->name}}</td>
-                    </tr>    
-
-                     <tr>
-                      <th>Email  </th>
-                      <th> : </th>
-                      <td>{{$guide->email}}</td>
-                    </tr>    
-
-                     <tr>
-                      <th>Alamat  </th>
-                      <th> : </th>
-                      <td>{{$guide->alamat}}</td>
-                    </tr>    
-
+          
                     @endforeach
                   </table>
                 </div>

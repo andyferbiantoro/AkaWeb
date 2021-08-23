@@ -56,24 +56,26 @@ class GuideController extends Controller
 	public function proses_ganti_foto_profil_guide(Request $request ,$id)
 	{
 		$foto_guide = User::find($id);
-		//dd($foto_guide);
 
-		File::delete('uploads/foto_pengelola/'.$foto_guide->photo);
-		$foto_guide->delete();  
+		$input =[
+			'name' => $request->name,
+			'email' => $request->email,
+			'nohp' => $request->nohp,
+			'alamat' => $request->alamat
+		]; 
 
-		if($request->hasFile('photo')){
-			$file = $request->file('photo');
-			$filename = $file->getClientOriginalName();
-			$file->move('uploads/foto_pengelola/', $filename);
-			$foto_guide->photo = $filename;
-
-		}else{
-			echo "Gagal upload gambar";
+		if ($file = $request->file('photo')) {
+			if ($foto_guide->photo) {
+				File::delete('uploads/foto_pengelola/'.$foto_guide->photo);
+			}
+			$nama_file = $file->getClientOriginalName();
+			$file->move(public_path() . '/uploads/foto_pengelola/', $nama_file);  
+			$input['photo'] = $nama_file;
 		}
 
-		$foto_guide->save();
+		$foto_guide->update($input);
 
-		return redirect('/guide-profil')->with('success', 'Foto profil berhasil diupdate');
+		return redirect('/guide-profil')->with('success', 'Data Guide berhasil diupdate');
 
 	}
 

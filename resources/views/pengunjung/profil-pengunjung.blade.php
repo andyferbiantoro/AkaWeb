@@ -35,7 +35,7 @@ Profil Pengunjung
                     <table class="table table-striped">
                       @foreach($data_pengunjung as $peng)
                       <div class="text-center">
-                           <form method="post" action="{{url('pengunjung-proses_ganti_foto_profil',$peng->id)}}" enctype="multipart/form-data">
+                           <form method="post" action="{{route('pengunjung-proses_ganti_foto_profil',$peng->id)}}" enctype="multipart/form-data">
                              {{csrf_field()}}
                              {{method_field('PUT')}}
                              <span class="avatar">

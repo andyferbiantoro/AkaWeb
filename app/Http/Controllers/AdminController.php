@@ -154,8 +154,8 @@ class AdminController extends Controller
 		if($request->hasFile('photo')){
 			$file = $request->file('photo');
 			$filename = $file->getClientOriginalName();
-			$path = $file->store('public/uploads/foto_guide');
-			$file->move('uploads/foto_guide/', $filename);
+			$path = $file->store('public/uploads/foto_pengelola');
+			$file->move('uploads/foto_pengelola/', $filename);
 			$data_guide->photo = $filename;
 
 		}else{
@@ -180,7 +180,7 @@ class AdminController extends Controller
 	public function hapus_data_guide($id){
 
 		$data_guide = User::findOrFail($id);
-		File::delete('uploads/foto_guide/'.$data_guide->photo);
+		File::delete('uploads/foto_pengelola/'.$data_guide->photo);
 		$data_guide->delete();
 
 		return redirect()->back()->with('success', 'Data Guide Berhasil Dihapus');

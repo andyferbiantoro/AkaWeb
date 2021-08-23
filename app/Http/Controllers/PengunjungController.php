@@ -236,7 +236,6 @@ class PengunjungController extends Controller
 	{
 	
 
-
 		$foto_pengunjung = User::find($id);
 
 		$input =[
