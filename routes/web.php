@@ -103,7 +103,7 @@ Route::group(['middleware' => ['auth', 'kepala_desa']],function(){
 	Route::get('/kepala_desa-laporan_pemesanan_paket', 'KepalaDesaController@laporan_pemesanan_paket')->name('kepala_desa-laporan_pemesanan_paket');
 	Route::get('/kepala_desa-laporan_pendapatan', 'KepalaDesaController@laporan_pendapatan')->name('kepala_desa-laporan_pendapatan');
 	Route::get('/kepala_desa-profil', 'KepalaDesaController@kepala_desa_profil')->name('kepala_desa-profil'); 
-	Route::put('/kepala_desa-proses_ganti_foto_profil_kades/{id}', 'KepalaDesaController@proses_ganti_foto_profil_kades')->name('kepala_desa-proses_ganti_foto_profil_kades');
+	Route::put('/kepala_desa-proses_ganti_profil_kades/{id}', 'KepalaDesaController@proses_ganti_profil_kades')->name('kepala_desa-proses_ganti_profil_kades');
 	Route::get('/kepala_desa-laporan_berkala_pengunjung', 'KepalaDesaController@laporan_berkala_pengunjung')->name('kepala_desa-laporan_berkala_pengunjung');
 	Route::get('/kepala_desa-laporan_berkala_pemesanan_paket', 'KepalaDesaController@laporan_berkala_pemesanan_paket')->name('kepala_desa-laporan_berkala_pemesanan_paket');
 	Route::get('/kepala_desa-laporan_berkala_pendapatan', 'KepalaDesaController@laporan_berkala_pendapatan')->name('kepala_desa-laporan_berkala_pendapatan');

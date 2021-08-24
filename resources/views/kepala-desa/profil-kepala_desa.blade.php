@@ -32,10 +32,11 @@ Profil Kepala Desa
                 <div class="row">
                   <div class="col-md-3"></div>
                   <div class="col-md-6">
-                    <table class="table table-striped">
+
+                  <table class="table table-striped">
                       @foreach($profil_kepala_desa as $kades)
                       <div class="text-center">
-                           <form method="post" action="{{url('kepala_desa-proses_ganti_foto_profil_kades',$kades->id)}}" enctype="multipart/form-data">
+                           <form method="post" action="{{route('kepala_desa-proses_ganti_profil_kades',$kades->id)}}" enctype="multipart/form-data">
                              {{csrf_field()}}
                              {{method_field('PUT')}}
                              <span class="avatar">
@@ -44,31 +45,34 @@ Profil Kepala Desa
 
                             <div class="form-group">
                               <label for="photo"> Ganti Foto Profil</label>
-                              <input type="file" class="form-control" id="photo" name="photo" placeholder=" " required=""  />
+                              <input type="file" class="form-control" id="photo" name="photo" placeholder=" "   />
                             </div> 
 
-                            <button class="btn btn-primary">Ganti Foto Profil</button>
+                             <div class="form-group">
+                              <label for="name"> Nama</label>
+                              <input type="text" class="form-control" id="name" name="name" placeholder=" "  value="{{$kades->name}}"  />
+                            </div> 
+
+                             <div class="form-group">
+                              <label for="email"> Email</label>
+                              <input type="email" class="form-control" id="email" name="email" placeholder=" "   value="{{$kades->email}}"/>
+                            </div> 
+
+                            <div class="form-group">
+                              <label for="nohp"> No Telepon</label>
+                              <input type="nohp" class="form-control" id="nohp" name="nohp" placeholder=" "   value="{{$kades->nohp}}"/>
+                            </div> 
+
+                             <div class="form-group">
+                              <label for="alamat"> Alamat</label>
+                              <input type="text" class="form-control" id="alamat" name="alamat" placeholder=" "  value="{{$kades->alamat}}" />
+                            </div> 
+
+                            <button class="btn btn-primary">Perbarui Profil</button>
                           </form>
                         <br><br><br>
                     </div>
-                    <tr>
-                      <th>Nama  </th>
-                      <th> : </th>
-                      <td>{{$kades->name}}</td>
-                    </tr>    
-
-                     <tr>
-                      <th>Email  </th>
-                      <th> : </th>
-                      <td>{{$kades->email}}</td>
-                    </tr>    
-
-                     <tr>
-                      <th>Alamat  </th>
-                      <th> : </th>
-                      <td>{{$kades->alamat}}</td>
-                    </tr>    
-
+          
                     @endforeach
                   </table>
                 </div>

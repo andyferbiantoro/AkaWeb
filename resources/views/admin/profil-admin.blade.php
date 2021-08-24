@@ -35,7 +35,7 @@ Profil Admin
                     <table class="table table-striped">
                       @foreach($profil_admin as $admin)
                       <div class="text-center">
-                           <form method="post" action="{{url('admin-proses_ganti_foto_profil_admin',$admin->id)}}" enctype="multipart/form-data">
+                           <form method="post" action="{{route('admin-proses_ganti_foto_profil_admin',$admin->id)}}" enctype="multipart/form-data">
                              {{csrf_field()}}
                              {{method_field('PUT')}}
                              <span class="avatar">

@@ -219,27 +219,29 @@ class KepalaDesaController extends Controller
 		return view('kepala-desa.profil-kepala_desa', compact('profil_kepala_desa'));
 	}
 
-	public function proses_ganti_foto_profil_kades(Request $request ,$id)
+	public function proses_ganti_profil_kades(Request $request ,$id)
 	{
-		$foto_kepala_desa = User::find($id);
-		//dd($foto_kepala_desa);
+		$foto_kades = User::find($id);
 
-		File::delete('uploads/foto_pengelola/'.$foto_kepala_desa->photo);
-		$foto_kepala_desa->delete();  
+		$input =[
+			'name' => $request->name,
+			'email' => $request->email,
+			'nohp' => $request->nohp,
+			'alamat' => $request->alamat
+		]; 
 
-		if($request->hasFile('photo')){
-			$file = $request->file('photo');
-			$filename = $file->getClientOriginalName();
-			$file->move('uploads/foto_pengelola/', $filename);
-			$foto_kepala_desa->photo = $filename;
-
-		}else{
-			echo "Gagal upload gambar";
+		if ($file = $request->file('photo')) {
+			if ($foto_kades->photo) {
+				File::delete('uploads/foto_pengelola/'.$foto_kades->photo);
+			}
+			$nama_file = $file->getClientOriginalName();
+			$file->move(public_path() . '/uploads/foto_pengelola/', $nama_file);  
+			$input['photo'] = $nama_file;
 		}
 
-		$foto_kepala_desa->save();
+		$foto_kades->update($input);
 
-		return redirect('/kepala_desa-profil')->with('success', 'Foto profil berhasil diupdate');
+		return redirect('/kepala_desa-profil')->with('success', 'Profil Kepala Desa berhasil diupdate');
 
 	}
 

@@ -27,7 +27,7 @@ class AuthController extends Controller
             return redirect()->route('kepala_desa-beranda')->with('success', 'Anda Berhasil Login');
         }
     }else{
-
+        return $role;
             return redirect()->route('login')->with('error', 'Username / Password anda salah'); //route itu isinya name dari route di web.php
 
         }
