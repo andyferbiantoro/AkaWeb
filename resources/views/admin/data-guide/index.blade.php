@@ -41,7 +41,7 @@ Data Guide
                                             <th scope="col">Nama</th>
                                             <th scope="col">Email</th>
                                             <th scope="col">Alamat</th>
-                                            <th scope="col">Aksi</th>
+                                           <!--  <th scope="col">Aksi</th> -->
 
                                         </tr>
                                     </thead>
@@ -56,11 +56,11 @@ Data Guide
                                         <td>{{$guide->name}}</td>
                                         <td>{{$guide->email}}</td>
                                         <td>{{$guide->alamat}}</td>
-                                        <td>
+                                       <!--  <td>
                                             <a href="javascript:;" data-toggle="modal" onclick="deleteData({{$guide->id}})" data-target="#DeleteModal">
                                                 <button class="btn btn-danger btn-sm fa fa-trash" title="Hapus"></button>
                                             </a>
-                                        </td>
+                                        </td> -->
 
                                     </tr>
                                     @endforeach

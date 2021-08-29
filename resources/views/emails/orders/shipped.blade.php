@@ -8,4 +8,10 @@ Jumlah Anggota : {{$pemesanan->jumlah_pengunjung}} Orang<br>
 Jumlah Pembayaran : Rp. <?=number_format($pemesanan->jumlah_pembayaran, 0, ".", ".")?>,00<br><br>
 
 Terima Kasih
+
+<!-- 
+   <img height="70" id="myImg"  src="{{asset('uploads/bukti_pelunasan/'.$pemesanan->bukti_pelunasan)}}"></img> -->
+
+<!-- {!! QrCode::size(200)->generate($pemesanan->nomor_pemesanan); !!} -->
+
 @endcomponent

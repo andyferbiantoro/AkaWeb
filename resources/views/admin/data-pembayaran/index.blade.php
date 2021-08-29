@@ -92,7 +92,7 @@ Data Pembayaran
 
                         <img height="70" id="myImg" src="{{asset('uploads/bukti_pelunasan/'.$pembayaran->bukti_pelunasan)}}" data-toggle="modal" data-target="#myModal"></img>
                         
-
+                  
                         <!-- <a href="#" class="image_pelunasan"><img  src="{{asset('uploads/bukti_pelunasan/'.$pembayaran->bukti_pelunasan)}}" width="100px" height="100px"></a> -->
                         @endif
                       </td>

@@ -727,4 +727,15 @@ class AdminController extends Controller
 		return redirect('/admin-data_pembayaran_pengunjung')->with('success', 'Pembayaran berhasil dilunasi');
 
 	}
+
+	public function get_paket_wisata($id){
+
+		$paket = Paket::where('id',$id)->first();
+
+		return response()->json([
+
+			'paket' => $paket
+		]);
+		
+	}
 }

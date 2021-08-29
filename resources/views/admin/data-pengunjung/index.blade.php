@@ -58,11 +58,11 @@ Data Pengunjung
                                     <td>{{$pengunjung->email}}</td>
                                     <td>{{$pengunjung->alamat}}</td>
                                     <td>{{$pengunjung->nohp}}</td>
-                                    <td>
+                                    <!-- <td>
                                         <a href="javascript:;" data-toggle="modal" onclick="deleteData({{$pengunjung->id}})" data-target="#DeleteModal">
                                             <button class="btn btn-danger btn-sm fa fa-trash" title="Hapus"></button>
                                         </a>
-                                    </td>
+                                    </td> -->
 
                                 </tr>
                                 @endforeach

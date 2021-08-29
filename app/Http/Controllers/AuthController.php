@@ -39,7 +39,7 @@ class AuthController extends Controller
             'required' => ':attribute wajib diisi',
             'min' => ':attribute harus diisi minimal :min karakter',
             'max' => ':attribute harus diisi maksimal :max karakter',
-            'same' => ':attribute harus sama dengan re password',
+            'same' => ':attribute harus sama dengan konfirmasi password',
         ];
 
             //validasi

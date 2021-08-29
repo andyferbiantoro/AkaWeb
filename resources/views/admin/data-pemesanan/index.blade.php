@@ -465,7 +465,7 @@ Data Pemesanan
 
 function PaketFunction(){
   var paket_wisata = document.getElementById("paket_wisata").value;
-  fetch("/pengunjung-get_paket_wisata/"+ paket_wisata )
+  fetch("/admin-get_paket_wisata/"+ paket_wisata )
   .then(response => response.json())
   .then(data => harga = data)
   .then(() => {

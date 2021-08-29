@@ -121,6 +121,8 @@ Data Pembayaran Pengunjung
 
                 
 
+                <!-- {!! QrCode::size(200)->generate($pemesanan->nomor_pemesanan,$pemesanan->jumlah_pembayaran); !!} -->
+
 
                 @if($pemesanan->status_pembayaran == '1')
                 <h5 style="color: red">Pembayaran anda sedang diverifikasi oleh admin, mohon tunggu email konfirmasi</h5><br>

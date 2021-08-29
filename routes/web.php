@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth', 'pengunjung']],function(){
 
 //Admin
 Route::get('/admin-get_paket_belum_bayar/{id_user}','AdminController@get_paket_belum_bayar')->name('admin-get_paket_belum_bayar');
+Route::get('/admin-get_paket_wisata/{id}','AdminController@get_paket_wisata')->name('admin-get_paket_wisata');
 Route::group(['middleware' => ['auth', 'admin']],function(){
 	Route::get('/admin-beranda', 'AdminController@index')->name('admin-beranda');
 	Route::get('/admin-beranda_paket', 'AdminController@index2')->name('admin-beranda_paket'); 
